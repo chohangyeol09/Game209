@@ -1,60 +1,73 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class H_Boss : MonoBehaviour
 {
     [SerializeField] private GameObject BulletPrefab;
-
+    [SerializeField] private H_EnemyDataSO BulletSO;
     [SerializeField] private GameObject FirePos;
 
+    private float _coolTime = 2;
+    private float _curTime = 0;
 
-    private Stack<GameObject> _bulletpool = new Stack<GameObject>();
+    private Action[] AttackPetton;
 
-    private int _health;
-    private int _damage;
-    private bool _islive;
-    private Transform _target;
-
-    private void Awake()
+    private void Start()
     {
-        for (int i = 0; i < 5; i++)
+        AttackPetton = new Action[]
         {
-            GameObject bullet = Instantiate(BulletPrefab);  
-            bullet.SetActive(false);
-            _bulletpool.Push(bullet);
+            LongAttack
+        };
+    }
+
+    private void Update()
+    {
+        _curTime += Time.deltaTime;
+
+        if (_coolTime < _curTime)
+        {
+            int r = Random.Range(0, AttackPetton.Length);
+            AttackPetton[r]();
         }
     }
 
+
+    #region 보스 패턴
     [ContextMenu("Shoot")]
     private IEnumerator Shoot()
     {
         for (int i = 0; i < 10; i++)
         {
-            FirePos.transform.DOPunchPosition(new Vector3(0f, 1f, 0), 0.5f, 10, 0.8f);
-            //FirePos.transform.DOPunchPosition(new Vector3(0,1,0),0.4f);
+            FirePos.transform.DOPunchPosition(new Vector3(0f, 0.2f, 0), 0.3f, 1, 0.8f);
 
-            if (_bulletpool.Count <= 0)
-                for (int j = 0; j < 5; j++)
-                {
-                    GameObject obj = Instantiate(BulletPrefab);
-                    obj.SetActive(false);
-                    _bulletpool.Push(obj);
-                }
+            Spown();
 
-
-            GameObject bullet = _bulletpool.Pop();
-            bullet.transform.position = FirePos.transform.position;
-            bullet.SetActive(true);
-        yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.2f);
         }
+        _curTime = 0;
 
     }
 
-    [ContextMenu("Test")]
-    private void Test()
+    private void LongAttack()
     {
         StartCoroutine(Shoot());
+    }
+    #endregion
+
+    private void Spown()
+    {
+
+        GameObject enemy = H_PoolManager.Instance.PoolPop(BulletSO);
+        
+
+        enemy.transform.position = FirePos.transform.position;
+
+        H_Enemy script = enemy.GetComponent<H_Enemy>();
+        
+        script.Data = BulletSO;
+        script.SetData();
     }
 }

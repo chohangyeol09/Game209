@@ -22,6 +22,18 @@ public class H_PoolManager : MonoBehaviour
 
     public GameObject PoolPop(H_EnemyDataSO data)
     {
+        if (data == null)
+        {
+            Debug.LogError(" PoolPop called with null data!");
+            return null;
+        }
+
+        if (string.IsNullOrEmpty(data.Name))
+        {
+            Debug.LogError(" EnemyDataSO.Name is null or empty!");
+            return null;
+        }
+
         string key = data.Name;
 
         if (!Enemypools.ContainsKey(key)) //없으면 보충

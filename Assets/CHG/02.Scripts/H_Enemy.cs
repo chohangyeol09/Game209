@@ -27,7 +27,6 @@ public class H_Enemy : MonoBehaviour
         _spriteRen = GetComponent<SpriteRenderer>();
         _target = GameObject.FindWithTag("Player");
         _playerScript = _target.GetComponent<Ku_PlayerMovement>();
-        SetData();
     }
 
     private void FixedUpdate()
@@ -52,11 +51,6 @@ public class H_Enemy : MonoBehaviour
 
     public void SetData()
     {
-        if (Data == null)
-        {
-            Debug.LogError("Enemy Data is NULL");
-            return;
-        }
         _target = GameObject.FindWithTag("Player");
         _playerScript = _target.GetComponent<Ku_PlayerMovement>();
 
@@ -70,7 +64,7 @@ public class H_Enemy : MonoBehaviour
         _damage = Data.Damage;
         _color = Data.color;
         _spriteRen.color = Data.color;
-        if (Data.Id == 3)
+        if (Data.Id == 3 || Data.Id == 4)
             _oneDir = _target.transform.position - transform.position;
 
 
