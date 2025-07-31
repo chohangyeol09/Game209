@@ -10,7 +10,7 @@ public class H_Spowner : MonoBehaviour
     [SerializeField] private H_EnemyDataSO[] AllEnemyData;
 
     private float _timer = 0;
-    private float _spownTime = 1f;
+    public float _spownTime = 1f;
     private int SpawnCount = 30;
     private float Range = 5f;
     private float _gameTime;
@@ -24,7 +24,6 @@ public class H_Spowner : MonoBehaviour
     {
         _gameTime += Time.deltaTime;
         _timer += Time.deltaTime;
-
         if (_gameTime < 20)
             curStage = 1;
         else if (_gameTime < 40)
@@ -58,11 +57,10 @@ public class H_Spowner : MonoBehaviour
     {
         var spawn = AllEnemyData.Where(d => d.SpawnStartTime <= _gameTime && d.SpawnStage == curStage).ToList();
         if (spawn.Count == 0) return;
-
         H_EnemyDataSO data = spawn[Random.Range(0, spawn.Count)];
         GameObject enemy = H_PoolManager.Instance.PoolPop(data);
         enemy.transform.position = SpownPosition[Random.Range(0, SpownPosition.Length)].position;
-
+        
         H_Enemy script = enemy.GetComponent<H_Enemy>();
         script.Data = data;
         script.SetData();

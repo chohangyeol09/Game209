@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aa620462d3f69a4686c259b4345a8b1, type: 3}
   m_Name: DownBullet
   m_EditorClassIdentifier: 
-  EnemyPrefab: {fileID: 0}
+  EnemyPrefab: {fileID: 3035874436995376536, guid: 13c2e60da9120a742baa16e5b9d7b061, type: 3}
   Id: 5
   Name: DownBullet
   Sprite: {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
   Damage: 3
   Speed: 2
   Exp: 0
-  SpawnStartTime: 0
-  color: {r: 0, g: 0, b: 0, a: 0}
+  SpawnStartTime: 1
+  color: {r: 0.509434, g: 0.509434, b: 0.509434, a: 1}
   MaxHealth: 0
-  SpawnStage: 0
+  SpawnStage: 1

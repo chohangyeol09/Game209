@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public class H_Enemy : MonoBehaviour
@@ -9,8 +8,8 @@ public class H_Enemy : MonoBehaviour
     private Rigidbody2D _rb2;
     private SpriteRenderer _spriteRen;
     private Color _color;
-    
-    
+
+
     private GameObject _target;
     private bool _isLive;
 
@@ -44,7 +43,7 @@ public class H_Enemy : MonoBehaviour
             case 4:
                 _rb2.linearVelocity = _oneDir * _speed * Time.fixedDeltaTime;
                 break;
-            
+
 
         }
     }
@@ -75,9 +74,12 @@ public class H_Enemy : MonoBehaviour
     private void Dead()
     {
         H_AudioManager.Instance.SfxPlay(H_AudioManager.Sfx.EnemyDead);
-        GameObject expbead = H_PoolManager.Instance.ExpPop();
-        expbead.transform.position = transform.position;
-        expbead.GetComponent<H_Expbead>().Exp = Data.Exp;
+        if (Data.Id != 4)
+        {
+            GameObject expbead = H_PoolManager.Instance.ExpPop();
+            expbead.transform.position = transform.position;
+            expbead.GetComponent<H_Expbead>().Exp = Data.Exp;
+        }
 
         _isLive = false;
         _rb2.linearVelocity = Vector3.zero;
@@ -88,8 +90,8 @@ public class H_Enemy : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (!_isLive) return;
-        
-        if(Data.Id == 4)
+
+        if (Data.Id == 4)
         {
             if (collision.gameObject.CompareTag("Player"))
             {

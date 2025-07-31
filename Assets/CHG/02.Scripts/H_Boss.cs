@@ -15,6 +15,8 @@ public class H_Boss : MonoBehaviour
     [SerializeField] private GameObject FireCanon;
     [SerializeField] private GameObject FirePos;
     [SerializeField] private GameObject DangerZonePrefab;
+
+    private int Health = 400;
     private float _coolTime = 5;
     private float _curTime = 0;
     private GameObject _target;
@@ -98,6 +100,18 @@ public class H_Boss : MonoBehaviour
 
 
     #endregion
+
+    /*private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.transform.CompareTag("Bullet"))
+        {
+            
+        }
+        else if (collision.transform.CompareTag("Player"))
+        {
+
+        }
+    }*/
 
     private void Spown()
     {
