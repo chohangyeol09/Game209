@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class Ku_PlayerWeaponRotate : MonoBehaviour
 {
-    [SerializeField] private GameObject playerWeapon; // 회전할 무기
-    [SerializeField] private float rotationDuration = 0.2f; // 회전 시간
+    [SerializeField] private GameObject playerWeapon;
+    [SerializeField] private float rotationDuration = 0.2f;
     [SerializeField] private Transform playerTransform;
 
     private void Start()
