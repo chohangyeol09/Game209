@@ -61,7 +61,7 @@ public class H_EnemySpowner : MonoBehaviour
 
                 _enemy.transform.position = SpownPosition[Random.Range(0, SpownPosition.Length)].position;
                 H_Enemy enemyScript = _enemy.GetComponent<H_Enemy>();
-                enemyScript.Data = EnemyData[r];
+                //enemyScript.Data = EnemyData[r];
                 enemyScript.SetData();
                 break;
         }
