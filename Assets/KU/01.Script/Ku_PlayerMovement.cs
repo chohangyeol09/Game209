@@ -15,11 +15,17 @@ public class Ku_PlayerMovement : MonoBehaviour
 
     public float speed = 5f;
 
+    private AudioSource playerDieAudio;
+    private void Awake()
+    {
+        playerDieAudio = GetComponent<AudioSource>();
+    }
     private void Update()
     {
         if(nowHp <= 0)
         {
             Debug.Log("Game Over");
+            playerDieAudio.Play();
         }
         if (!upgradeManager.isUpgrade)
         {
