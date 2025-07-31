@@ -20,6 +20,6 @@ public class Ku_UpgradeCard : MonoBehaviour
 
     public void ChooseButton()
     {
-        Debug.Log("Button");
+        GameObject.Find("expManager").GetComponent<Ku_PlayerUpgradeManager>().OnUpgradeComplete(upgradeCardSO.cardNum);
     }
 }

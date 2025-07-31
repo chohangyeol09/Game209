@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c52df0e4f5c73444291e935b8b5f5ac7, type: 3}
   m_Name: TestUpgradeSO 3
   m_EditorClassIdentifier: 
-  visual: {fileID: 21300000, guid: a1a811b6b5ebd4f7184a1d28b54997f8, type: 3}
-  name: Apple
+  visual: {fileID: 21300000, guid: 79d32f175afeb4c69bc6bb071702f2bd, type: 3}
+  name: Band
   coment: Get Heal for your  Max Health of 20%
+  cardNum: 3
