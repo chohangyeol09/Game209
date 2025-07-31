@@ -14,6 +14,7 @@ public class Ku_PlayerUpgradeManager : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI testMesh;
     [SerializeField] private GameObject upgradePanel;
+    [SerializeField] private GameObject weapon;
 
     private float targetScale = 3;
     private void Update()
@@ -101,6 +102,10 @@ public class Ku_PlayerUpgradeManager : MonoBehaviour
                 movement.cooldown -= 0.2f;
                 return;
             case 9:
+                return;
+            case 10: attack.pushDistance += 0.25f;
+                return;
+            case 11: weapon.transform.localScale = new Vector3(1, weapon.transform.localScale.y + 0.25f, 1);
                 return;
             default: return;
         }
