@@ -24,7 +24,7 @@ public class H_PoolManager : MonoBehaviour
     {
         string key = data.Name;
 
-        if (!Enemypools.ContainsKey(key)) // 처음 초기화
+        if (!Enemypools.ContainsKey(key)) //없으면 보충
         {
             Enemypools[key] = new Stack<GameObject>();
             for (int i = 0; i < PoolSize; i++)
