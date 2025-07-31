@@ -27,6 +27,21 @@ public class H_EnemySpowner : MonoBehaviour
             _timer = 0;
             Spown();
         }
+
+        if (Keyboard.current.spaceKey.wasPressedThisFrame) //일정 시간마다
+        {
+            for (int i = 0; i < SpawnCount; i++)
+            {
+                float angle = i * Mathf.PI * 2 / SpawnCount;
+                float x = Mathf.Cos(angle) * Range;
+                float z = Mathf.Sin(angle) * Range;
+
+                float angleDegrees = -angle * Mathf.Rad2Deg;
+                GameObject enemy = Instantiate(EnemyPrefabs, new Vector3(x, z, 0), new Quaternion(0,0,0,0));
+                enemy.transform.SetParent(gameObject.transform);
+            }
+        }
+
     }
 
     private void Spown()
@@ -47,10 +62,7 @@ public class H_EnemySpowner : MonoBehaviour
 
         }
 
-        /*if (Keyboard.current.spaceKey.wasPressedThisFrame) //일정 시간마다
-        {
-            for (int i )
-        }*/
+        
 
     }
 }

@@ -53,10 +53,7 @@ public class H_Enemy : MonoBehaviour
         _damage = Data.Damage;
 
         if (Data.Id == 3)
-        {
             _oneDir = _target.transform.position - transform.position;
-            Debug.Log(gameObject.name);
-        }
 
 
         _isLive = true;
