@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
+// ===== 2D 안전지대 컨트롤러 =====
 public class SafeZone : MonoBehaviour
 {
     [Header("Zone Settings")]
@@ -58,7 +59,7 @@ public class SafeZone : MonoBehaviour
 
     void SetupVisuals()
     {
-        // Zone Outline 설정
+        // Zone Outline 설정 (빨간색 벽)
         if (zoneOutline == null)
         {
             GameObject outlineObj = new GameObject("Zone Outline");
@@ -66,10 +67,15 @@ public class SafeZone : MonoBehaviour
             zoneOutline = outlineObj.AddComponent<LineRenderer>();
         }
 
-        zoneOutline.startWidth = 0.5f;
-        zoneOutline.endWidth = 0.5f;
+        zoneOutline.startWidth = 1f;  // 더 두껍게
+        zoneOutline.endWidth = 1f;
         zoneOutline.loop = true;
         zoneOutline.sortingOrder = 10;
+
+        // LineRenderer Material 설정
+        zoneOutline.material = new Material(Shader.Find("Sprites/Default"));
+        zoneOutline.startColor = Color.red;
+        zoneOutline.endColor = Color.red;
 
         // Next Zone Outline 설정
         if (nextZoneOutline == null)
@@ -85,16 +91,6 @@ public class SafeZone : MonoBehaviour
         nextZoneOutline.sortingOrder = 9;
         nextZoneOutline.enabled = false;
 
-        // Zone Fill 설정 (원형 스프라이트 필요)
-        if (zoneFillSprite == null)
-        {
-            GameObject fillObj = new GameObject("Zone Fill");
-            fillObj.transform.parent = transform;
-            zoneFillSprite = fillObj.AddComponent<SpriteRenderer>();
-            zoneFillSprite.sprite = CreateCircleSprite();
-            zoneFillSprite.sortingOrder = -1;
-        }
-
         // 초기 시각 효과 업데이트
         UpdateZoneVisuals();
 
@@ -106,6 +102,8 @@ public class SafeZone : MonoBehaviour
             shape.radius = currentRadius;
             shape.radiusThickness = 0.1f;
         }
+
+        Debug.Log($"안전지대 초기화 완료 - 초기 반경: {currentRadius}");
     }
 
     Sprite CreateCircleSprite()
@@ -264,23 +262,22 @@ public class SafeZone : MonoBehaviour
 
     void UpdateZoneVisuals()
     {
-        // 원형 외곽선 그리기
+        // 원형 외곽선 그리기 (빨간색 벽)
         DrawCircle(zoneOutline, currentCenter, currentRadius, 64);
 
-        // 색상 업데이트
-        Color currentColor = isShrinking ? dangerColor : safeColor;
+        // 항상 빨간색으로 유지
         if (zoneOutline.material != null)
         {
-            zoneOutline.material.color = currentColor;
+            zoneOutline.material.color = Color.red;
         }
 
-        // Fill 스프라이트 업데이트
-        if (zoneFillSprite != null)
+        // Zone Fill은 제거하거나 옵션으로 (성능을 위해)
+        if (zoneFillSprite != null && zoneFillSprite.gameObject.activeSelf)
         {
             zoneFillSprite.transform.position = currentCenter;
-            float scale = currentRadius * 2f / 2f; // 스프라이트 크기에 맞게 조정
+            float scale = currentRadius * 2f;
             zoneFillSprite.transform.localScale = new Vector3(scale, scale, 1);
-            zoneFillSprite.color = currentColor;
+            zoneFillSprite.color = new Color(1, 0, 0, 0.1f); // 약간 투명한 빨간색
         }
 
         // 파티클 업데이트
@@ -290,6 +287,8 @@ public class SafeZone : MonoBehaviour
             var shape = edgeParticles.shape;
             shape.radius = currentRadius;
         }
+
+        Debug.Log($"Zone 업데이트 - 현재 반경: {currentRadius:F1}, 중심: {currentCenter}");
     }
 
     void DrawCircle(LineRenderer lineRenderer, Vector2 center, float radius, int segments)
@@ -301,8 +300,15 @@ public class SafeZone : MonoBehaviour
             float angle = (float)i / segments * 2 * Mathf.PI;
             float x = center.x + Mathf.Cos(angle) * radius;
             float y = center.y + Mathf.Sin(angle) * radius;
-            lineRenderer.SetPosition(i, new Vector3(x, y, 0));
+
+            // Z값을 약간 앞으로 해서 다른 오브젝트보다 위에 그려지도록
+            lineRenderer.SetPosition(i, new Vector3(x, y, -1));
         }
+
+        // LineRenderer 설정 확인
+        lineRenderer.enabled = true;
+        lineRenderer.startColor = Color.red;
+        lineRenderer.endColor = Color.red;
     }
 
     void CheckPlayersInZone()

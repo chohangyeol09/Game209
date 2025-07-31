@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SafeZone2DUI : MonoBehaviour
+public class SafeZoneUI : MonoBehaviour
 {
     [Header("Zone Info")]
     [SerializeField] private Text phaseText;
