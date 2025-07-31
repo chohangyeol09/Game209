@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
 
-public class H_EnemySpowner : MonoBehaviour
+public class H_Spowner : MonoBehaviour
 {
 
     [SerializeField] private Transform[] SpownPosition;

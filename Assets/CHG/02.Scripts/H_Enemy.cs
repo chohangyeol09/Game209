@@ -93,13 +93,14 @@ public class H_Enemy : MonoBehaviour
         {
             if (collision.gameObject.CompareTag("Player"))
             {
-                _playerScript.nowHp -= _damage;
+                //_playerScript.nowHp -= _damage;
+                Dead();
             }
         }
-
-        if(collision.gameObject.CompareTag("Player"))
+        else if (collision.gameObject.CompareTag("Player"))
         {
             _playerScript.nowHp -= (int)Time.fixedDeltaTime * _damage;
         }
+
     }
 }

@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8aa620462d3f69a4686c259b4345a8b1, type: 3}
-  m_Name: Bullet
+  m_Name: DownBullet
   m_EditorClassIdentifier: 
-  EnemyPrefab: {fileID: 8232952991763877726, guid: 165e9c2e75f7ab54384740999fa6927a, type: 3}
-  Id: 4
-  Name: Bullet
-  Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  Damage: 2
-  Speed: 20
+  EnemyPrefab: {fileID: 0}
+  Id: 5
+  Name: DownBullet
+  Sprite: {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
+  Damage: 3
+  Speed: 2
   Exp: 0
   SpawnStartTime: 0
-  color: {r: 1, g: 0, b: 0, a: 1}
-  MaxHealth: 24
+  color: {r: 0, g: 0, b: 0, a: 0}
+  MaxHealth: 0
   SpawnStage: 0
