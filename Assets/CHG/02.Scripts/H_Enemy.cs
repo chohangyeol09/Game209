@@ -67,10 +67,10 @@ public class H_Enemy : MonoBehaviour
         expbead.transform.position = transform.position;
         H_Expbead exp = expbead.GetComponent<H_Expbead>();
         exp.Exp = Data.Exp;
-        AudioSources[Random.Range(0, 2)].Play();
+        AudioSources[Random.Range(0, AudioSources.Length)].Play();
             
 
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
         H_PoolManager.Instance.EnemyPool.Push(gameObject);
     }
 }
