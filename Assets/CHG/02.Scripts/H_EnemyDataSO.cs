@@ -11,6 +11,7 @@ public class H_EnemyDataSO : ScriptableObject
     public float Speed;
     public int Exp;
     public float SpawnStartTime;
+    public Color color;
 
     public int SpawnStage;
 }

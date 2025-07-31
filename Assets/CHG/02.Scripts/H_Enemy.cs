@@ -8,6 +8,7 @@ public class H_Enemy : MonoBehaviour
     private Rigidbody2D _rb2;
     private Collider2D _collider;
     private SpriteRenderer _spriteRen;
+    private Color _color;
     
 
 
@@ -23,6 +24,7 @@ public class H_Enemy : MonoBehaviour
         _collider = GetComponent<Collider2D>();
         _spriteRen = GetComponent<SpriteRenderer>();
         _target = GameObject.FindWithTag("Player");
+        _color = _spriteRen.color;
     }
 
     private void FixedUpdate()
@@ -51,7 +53,8 @@ public class H_Enemy : MonoBehaviour
         _spriteRen.sprite = Data.Sprite;
         _speed = Data.Speed;
         _damage = Data.Damage;
-
+        _color = Data.color;
+        _spriteRen.color = Data.color;
         if (Data.Id == 3)
             _oneDir = _target.transform.position - transform.position;
 
