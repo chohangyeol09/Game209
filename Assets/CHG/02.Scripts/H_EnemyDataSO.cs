@@ -7,11 +7,12 @@ public class H_EnemyDataSO : ScriptableObject
     public int Id;
     public string Name;
     public Sprite Sprite;
-    public float Damage;
+    public int Damage;
     public float Speed;
     public int Exp;
     public float SpawnStartTime;
     public Color color;
+    public int MaxHealth;
 
     public int SpawnStage;
 }
