@@ -7,7 +7,6 @@ public class H_Enemy : MonoBehaviour
     private Ku_PlayerMovement _playerScript;
 
     private Rigidbody2D _rb2;
-    private Collider2D _collider;
     private SpriteRenderer _spriteRen;
     private Color _color;
     
@@ -25,7 +24,6 @@ public class H_Enemy : MonoBehaviour
     private void Awake()
     {
         _rb2 = GetComponent<Rigidbody2D>();
-        _collider = GetComponent<Collider2D>();
         _spriteRen = GetComponent<SpriteRenderer>();
         _target = GameObject.FindWithTag("Player");
         _playerScript = _target.GetComponent<Ku_PlayerMovement>();
@@ -54,6 +52,15 @@ public class H_Enemy : MonoBehaviour
 
     public void SetData()
     {
+        if (Data == null)
+        {
+            Debug.LogError("Enemy Data is NULL");
+            return;
+        }
+        _target = GameObject.FindWithTag("Player");
+        _playerScript = _target.GetComponent<Ku_PlayerMovement>();
+
+
         gameObject.name = Data.Name;
         _spriteRen.sprite = Data.Sprite;
         _speed = Data.Speed;

@@ -21,7 +21,7 @@ public class H_Boss : MonoBehaviour
     {
         for (int i = 0; i < 5; i++)
         {
-            GameObject bullet = Instantiate(BulletPrefab);
+            GameObject bullet = Instantiate(BulletPrefab);  
             bullet.SetActive(false);
             _bulletpool.Push(bullet);
         }
