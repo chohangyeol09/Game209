@@ -8,5 +8,5 @@ public class H_EnemyDataSO : ScriptableObject
     public Sprite Sprite;
     public float Damage;
     public float Speed;
-    public float Exp;
+    public int Exp;
 }

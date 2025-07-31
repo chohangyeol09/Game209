@@ -3,10 +3,13 @@ using UnityEngine;
 public class H_Enemy : MonoBehaviour
 {
     public H_EnemyDataSO Data;
+    [SerializeField] private AudioSource[] AudioSources;
 
     private Rigidbody2D _rb2;
     private Collider2D _collider;
     private SpriteRenderer _spriteRen;
+    
+
 
     private GameObject _target;
     private bool _isLive;
@@ -20,7 +23,7 @@ public class H_Enemy : MonoBehaviour
         _collider = GetComponent<Collider2D>();
         _spriteRen = GetComponent<SpriteRenderer>();
         _target = GameObject.FindWithTag("Player");
-
+        AudioSources = GetComponents<AudioSource>();
     }
 
     private void FixedUpdate()
@@ -33,11 +36,9 @@ public class H_Enemy : MonoBehaviour
             case 2:
                 dirVec = _target.transform.position - gameObject.transform.position;
                 _rb2.linearVelocity = dirVec * _speed * Time.fixedDeltaTime;
-                Debug.Log(gameObject.name);
                 break;
             case 3:
                 _rb2.linearVelocity = _oneDir * _speed * Time.fixedDeltaTime;
-                Debug.Log(gameObject.name); 
                 break;
             //case 4:
             
@@ -57,5 +58,19 @@ public class H_Enemy : MonoBehaviour
 
 
         _isLive = true;
+    }
+
+    [ContextMenu("dead")]
+    private void Dead()
+    {
+        GameObject expbead = H_PoolManager.Instance.PoolPop("Exp");
+        expbead.transform.position = transform.position;
+        H_Expbead exp = expbead.GetComponent<H_Expbead>();
+        exp.Exp = Data.Exp;
+        AudioSources[Random.Range(0, AudioSources.Length)].Play();
+            
+
+        //gameObject.SetActive(false);
+        H_PoolManager.Instance.EnemyPool.Push(gameObject);
     }
 }
