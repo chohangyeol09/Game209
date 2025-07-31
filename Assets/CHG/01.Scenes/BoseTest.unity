@@ -1469,6 +1469,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BulletSO: {fileID: 11400000, guid: f1fc5c693773cbe46abc07f35674cf42, type: 2}
+  CannonBall: {fileID: 11400000, guid: 9d619020938dd5648aaca4fe6adb1bca, type: 2}
   BulletPrefab: {fileID: 8232952991763877726, guid: 165e9c2e75f7ab54384740999fa6927a, type: 3}
   FireCanon: {fileID: 1125777309}
   FirePos: {fileID: 524470865}

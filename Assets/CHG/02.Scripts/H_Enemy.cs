@@ -31,7 +31,7 @@ public class H_Enemy : MonoBehaviour
     private void FixedUpdate()
     {
         if (!_isLive) return;
-
+        Debug.Log(1);
         switch (Data.Id)
         {
             case 1:
@@ -41,7 +41,9 @@ public class H_Enemy : MonoBehaviour
                 break;
             case 3:
             case 4:
+            case 5:
                 _rb2.linearVelocity = _oneDir * _speed * Time.fixedDeltaTime;
+                Debug.Log(2);
                 break;
 
 
@@ -74,7 +76,7 @@ public class H_Enemy : MonoBehaviour
     private void Dead()
     {
         H_AudioManager.Instance.SfxPlay(H_AudioManager.Sfx.EnemyDead);
-        if (Data.Id != 4)
+        if (Data.Id != 4 || Data.Id != 5)
         {
             GameObject expbead = H_PoolManager.Instance.ExpPop();
             expbead.transform.position = transform.position;
@@ -91,7 +93,7 @@ public class H_Enemy : MonoBehaviour
     {
         if (!_isLive) return;
 
-        if (Data.Id == 4)
+        if (Data.Id == 4 || Data.Id == 5)
         {
             if (collision.gameObject.CompareTag("Player"))
             {

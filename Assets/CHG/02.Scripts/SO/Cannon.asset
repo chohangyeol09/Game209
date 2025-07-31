@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8aa620462d3f69a4686c259b4345a8b1, type: 3}
-  m_Name: Bullet
+  m_Name: Cannon
   m_EditorClassIdentifier: 
-  EnemyPrefab: {fileID: 8232952991763877726, guid: 165e9c2e75f7ab54384740999fa6927a, type: 3}
-  Id: 5
+  EnemyPrefab: {fileID: 3829427305675720089, guid: 3d40fda204a622b46b575a580b47d2c5, type: 3}
+  Id: 4
   Name: Bullet
   Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  Damage: 29
-  Speed: 20
+  Damage: 2
+  Speed: 13.07
   Exp: 0
   SpawnStartTime: 0
   color: {r: 1, g: 0, b: 0, a: 1}

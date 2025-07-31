@@ -8,6 +8,7 @@ using Random = UnityEngine.Random;
 public class H_Boss : MonoBehaviour
 {
     [SerializeField] private H_EnemyDataSO BulletSO;
+    [SerializeField] private H_EnemyDataSO CannonBall;
     private H_DangerZone _dangerZone;
     private Ku_PlayerMovement _playerScript;
 
@@ -19,15 +20,15 @@ public class H_Boss : MonoBehaviour
     private int Health = 400;
     private float _coolTime = 5;
     private float _curTime = 0;
+    private SpriteRenderer _spriteRen;
     private GameObject _target;
     private Action[] AttackPetton;
-
     private void Awake()
     {
         _target = GameObject.FindWithTag("Player");
         _playerScript = _target.GetComponent<Ku_PlayerMovement>();
         _dangerZone = DangerZonePrefab.GetComponent<H_DangerZone>();
-
+        _spriteRen = GetComponent<SpriteRenderer>();
     }
 
     private void Start()
@@ -35,7 +36,8 @@ public class H_Boss : MonoBehaviour
         AttackPetton = new Action[]
         {
             LongAttack,
-            DangerZone
+            DangerZone,
+            Cannon
         };
     }
 
@@ -98,6 +100,16 @@ public class H_Boss : MonoBehaviour
         Destroy(dangerzone);
     }
 
+    private void Cannon()
+    {
+        //시간이 지날수록 붉어지다가 발사
+        _spriteRen.DOColor(Color.red, 2.5f).OnComplete(() =>
+        {
+            GameObject CannonBall = Instantiate(this.CannonBall.EnemyPrefab);
+            CannonBall.transform.position = FirePos.transform.position;
+            _spriteRen.DOColor(Color.white, 0.5f);
+        });
+    }
 
     #endregion
 
