@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
@@ -7,12 +6,16 @@ public class H_EnemySpowner : MonoBehaviour
 {
 
     [SerializeField] private Transform[] SpownPosition;
-    [SerializeField] private H_EnemyDataSO[] EnemyData;
+    [SerializeField] private H_EnemyDataSO[] EnemyData1;
+    [SerializeField] private H_EnemyDataSO[] EnemyData2;
+    [SerializeField] private H_EnemyDataSO[] EnemyData3;
     private float _timer = 0;
     private float _spownTime = 1f;
 
     private int SpawnCount = 30;
     private float Range = 5f;
+    private float _gameTime;
+    private GameObject _enemy;
     private void Awake()
     {
         SpownPosition = GetComponentsInChildren<Transform>();
@@ -20,7 +23,10 @@ public class H_EnemySpowner : MonoBehaviour
 
     private void Update()
     {
+        _gameTime += Time.deltaTime;
         _timer += Time.deltaTime;
+
+
         if (_timer > _spownTime)
         {
             _timer = 0;
@@ -44,15 +50,17 @@ public class H_EnemySpowner : MonoBehaviour
 
     private void Spown()
     {
+
         int r = Random.Range(0, 4);
         switch (r)
         {
             case 0:
             case 1:
             case 2:
-                GameObject enemy = H_PoolManager.Instance.PoolPop("Enemy");
-                enemy.transform.position = SpownPosition[Random.Range(0, SpownPosition.Length)].position;
-                H_Enemy enemyScript = enemy.GetComponent<H_Enemy>();
+                _enemy = H_PoolManager.Instance.PoolPop("Enemy");
+
+                _enemy.transform.position = SpownPosition[Random.Range(0, SpownPosition.Length)].position;
+                H_Enemy enemyScript = _enemy.GetComponent<H_Enemy>();
                 enemyScript.Data = EnemyData[r];
                 enemyScript.SetData();
                 break;
