@@ -9,7 +9,7 @@ public class Ku_PlayerUpgradeManager : MonoBehaviour
     private int otherExp = 0;
 
     public bool isUpgrade = false;
-    [SerializeField] private Ku_PlayerMovement movement;
+    [SerializeField] private Iyc_PlayerController movement;
     [SerializeField] private Ku_PlayerWeaponAttack attack;
 
     [SerializeField] private TextMeshProUGUI testMesh;
