@@ -63,13 +63,13 @@ public class H_Enemy : MonoBehaviour
     private void Dead()
     {
         H_AudioManager.Instance.SfxPlay(H_AudioManager.Sfx.EnemyDead);
-        GameObject expbead = H_PoolManager.Instance.PoolPop("Exp");
+        GameObject expbead = H_PoolManager.Instance.ExpPop();
         expbead.transform.position = transform.position;
-        H_Expbead exp = expbead.GetComponent<H_Expbead>();
-        exp.Exp = Data.Exp;
-            
+        expbead.GetComponent<H_Expbead>().Exp = Data.Exp;
 
-        gameObject.SetActive(false);
-        H_PoolManager.Instance.EnemyPool.Push(gameObject);
+        _isLive = false;
+        _rb2.linearVelocity = Vector3.zero;
+
+        H_PoolManager.Instance.EnemyPush(Data, gameObject);
     }
 }

@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aa620462d3f69a4686c259b4345a8b1, type: 3}
   m_Name: SquEnemy
   m_EditorClassIdentifier: 
+  EnemyPrefab: {fileID: 8542369977999990975, guid: 33c177d17a651c54093438f35ba9bbb7, type: 3}
   Id: 2
   Name: SquEnemy
   Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
   Damage: 0
   Speed: 5.8
   Exp: 6
+  SpawnStartTime: 2.95
+  SpawnStage: 3

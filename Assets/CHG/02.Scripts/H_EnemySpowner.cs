@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
@@ -6,16 +7,14 @@ public class H_EnemySpowner : MonoBehaviour
 {
 
     [SerializeField] private Transform[] SpownPosition;
-    [SerializeField] private H_EnemyDataSO[] EnemyData1;
-    [SerializeField] private H_EnemyDataSO[] EnemyData2;
-    [SerializeField] private H_EnemyDataSO[] EnemyData3;
+    [SerializeField] private H_EnemyDataSO[] AllEnemyData;
+
     private float _timer = 0;
     private float _spownTime = 1f;
-
     private int SpawnCount = 30;
     private float Range = 5f;
     private float _gameTime;
-    private GameObject _enemy;
+    private int curStage = 1;
     private void Awake()
     {
         SpownPosition = GetComponentsInChildren<Transform>();
@@ -26,6 +25,13 @@ public class H_EnemySpowner : MonoBehaviour
         _gameTime += Time.deltaTime;
         _timer += Time.deltaTime;
 
+        if (_gameTime < 20)
+            curStage = 1;
+        else if (_gameTime < 40)
+            curStage = 2;
+        else if (_gameTime < 60)
+            curStage = 3;
+
 
         if (_timer > _spownTime)
         {
@@ -33,7 +39,7 @@ public class H_EnemySpowner : MonoBehaviour
             Spown();
         }
 
-        if (Keyboard.current.spaceKey.wasPressedThisFrame) //일정 시간마다
+        if (Keyboard.current.spaceKey.wasPressedThisFrame) //일정 시간마다로 바꾸기
         {
             for (int i = 0; i < SpawnCount; i++)
             {
@@ -42,29 +48,24 @@ public class H_EnemySpowner : MonoBehaviour
                 float z = Mathf.Sin(angle) * Range;
 
                 float angleDegrees = -angle * Mathf.Rad2Deg;
-                GameObject enemy = H_PoolManager.Instance.PoolPop("Enemy");
-                enemy.transform.position = new Vector3(x, z, 0);
+                //GameObject enemy = H_PoolManager.Instance.PoolPop("Enemy"); //소환 수정
+                //enemy.transform.position = new Vector3(x, z, 0);
             }
         }
     }
 
     private void Spown()
     {
+        var spawn = AllEnemyData.Where(d => d.SpawnStartTime <= _gameTime && d.SpawnStage == curStage).ToList();
+        if (spawn.Count == 0) return;
 
-        int r = Random.Range(0, 4);
-        switch (r)
-        {
-            case 0:
-            case 1:
-            case 2:
-                _enemy = H_PoolManager.Instance.PoolPop("Enemy");
+        H_EnemyDataSO data = spawn[Random.Range(0, spawn.Count)];
+        GameObject enemy = H_PoolManager.Instance.PoolPop(data);
+        enemy.transform.position = SpownPosition[Random.Range(0, SpownPosition.Length)].position;
 
-                _enemy.transform.position = SpownPosition[Random.Range(0, SpownPosition.Length)].position;
-                H_Enemy enemyScript = _enemy.GetComponent<H_Enemy>();
-                //enemyScript.Data = EnemyData[r];
-                enemyScript.SetData();
-                break;
-        }
+        H_Enemy script = enemy.GetComponent<H_Enemy>();
+        script.Data = data;
+        script.SetData();
     }
 }
 
