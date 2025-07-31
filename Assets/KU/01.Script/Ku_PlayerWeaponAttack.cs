@@ -2,8 +2,12 @@ using UnityEngine;
 
 public class Ku_PlayerWeaponAttack : MonoBehaviour
 {
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        Debug.Log("Player is Attacking Enemy!");
-    }
+    public int damage = 5;
+    //private void OnCollisionEnter2D(Collision2D collision)
+    //{
+    //    if (collision.gameObject.CompareTag("Enemy"))
+    //    {
+    //        Debug.Log("Player is Attacking Enemy!");
+    //    }
+    //}
 }
