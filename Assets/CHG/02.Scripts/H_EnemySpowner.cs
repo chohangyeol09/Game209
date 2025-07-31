@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
 
 public class H_EnemySpowner : MonoBehaviour
@@ -9,6 +10,9 @@ public class H_EnemySpowner : MonoBehaviour
 
     private float _timer = 0;
     private float _spownTime = 1f;
+
+    private int SpawnCount = 10;
+    private float Range = 5f;
     private void Awake()
     {
         SpownPosition = GetComponentsInChildren<Transform>();
@@ -27,24 +31,26 @@ public class H_EnemySpowner : MonoBehaviour
 
     private void Spown()
     {
-        switch (Random.Range(0, 6))
+        int r = Random.Range(0, 4);
+        switch (r)
         {
             case 0:
             case 1:
+            case 2:
                 GameObject enemy = Instantiate(EnemyPrefabs);
                 enemy.transform.position = SpownPosition[Random.Range(0, SpownPosition.Length)].position;
                 H_Enemy enemyScript = enemy.GetComponent<H_Enemy>();
-                enemyScript.Data = EnemyData[Random.Range(0, EnemyData.Length)];
-                Debug.Log(enemyScript.Data.name);
+                enemyScript.Data = EnemyData[r];
                 enemyScript.SetData();
                 break;
-            //case 3:
-
-
+                
 
         }
 
-
+        /*if (Keyboard.current.spaceKey.wasPressedThisFrame) //일정 시간마다
+        {
+            for (int i )
+        }*/
 
     }
 }

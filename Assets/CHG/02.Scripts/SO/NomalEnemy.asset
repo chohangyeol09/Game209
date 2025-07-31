@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aa620462d3f69a4686c259b4345a8b1, type: 3}
   m_Name: NomalEnemy
   m_EditorClassIdentifier: 
-  Id: 0
+  Id: 1
   Name: NomalEnemy
   Sprite: {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
   Damage: 2
