@@ -22,7 +22,7 @@ public class ObstacleWall : MonoBehaviour
         // 스케일 축소 (x축만 줄이기)
         shrinkTimer += Time.deltaTime;
         float t = shrinkTimer / scaleShrinkDuration;
-        float newX = Mathf.Lerp(initialScale.x, 0f, t);
+        float newX = Mathf.Lerp(initialScale.x, 0.5f, t);
         transform.localScale = new Vector3(newX, initialScale.y, initialScale.z);  // y, z 고정
 
         // 제거 조건
