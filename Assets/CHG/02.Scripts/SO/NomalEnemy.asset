@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aa620462d3f69a4686c259b4345a8b1, type: 3}
   m_Name: NomalEnemy
   m_EditorClassIdentifier: 
+  EnemyPrefab: {fileID: 4941801667898874765, guid: c51cc2549b5fab745bccd695145df7c9, type: 3}
   Id: 1
   Name: NomalEnemy
   Sprite: {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
   Damage: 2
   Speed: 3
   Exp: 3
+  SpawnStartTime: 5
+  SpawnStage: 1

@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aa620462d3f69a4686c259b4345a8b1, type: 3}
   m_Name: SpeedEnemy
   m_EditorClassIdentifier: 
+  EnemyPrefab: {fileID: 4039115710039186371, guid: f2640c88f6a5aea4cae36a0a6d85ebf9, type: 3}
   Id: 3
   Name: SpeedEnemy
   Sprite: {fileID: 3625043607559282579, guid: 045b15ec09bba42448d89db77fa6f20a, type: 3}
   Damage: 2
   Speed: 10
   Exp: 2
+  SpawnStartTime: 6
+  SpawnStage: 2

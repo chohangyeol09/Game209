@@ -1,9 +1,9 @@
+using System.Collections;
 using UnityEngine;
 
 public class H_Enemy : MonoBehaviour
 {
     public H_EnemyDataSO Data;
-    [SerializeField] private AudioSource[] AudioSources;
 
     private Rigidbody2D _rb2;
     private Collider2D _collider;
@@ -23,7 +23,6 @@ public class H_Enemy : MonoBehaviour
         _collider = GetComponent<Collider2D>();
         _spriteRen = GetComponent<SpriteRenderer>();
         _target = GameObject.FindWithTag("Player");
-        AudioSources = GetComponents<AudioSource>();
     }
 
     private void FixedUpdate()
@@ -63,14 +62,14 @@ public class H_Enemy : MonoBehaviour
     [ContextMenu("dead")]
     private void Dead()
     {
-        GameObject expbead = H_PoolManager.Instance.PoolPop("Exp");
+        H_AudioManager.Instance.SfxPlay(H_AudioManager.Sfx.EnemyDead);
+        GameObject expbead = H_PoolManager.Instance.ExpPop();
         expbead.transform.position = transform.position;
-        H_Expbead exp = expbead.GetComponent<H_Expbead>();
-        exp.Exp = Data.Exp;
-        AudioSources[Random.Range(0, AudioSources.Length)].Play();
-            
+        expbead.GetComponent<H_Expbead>().Exp = Data.Exp;
 
-        //gameObject.SetActive(false);
-        H_PoolManager.Instance.EnemyPool.Push(gameObject);
+        _isLive = false;
+        _rb2.linearVelocity = Vector3.zero;
+
+        H_PoolManager.Instance.EnemyPush(Data, gameObject);
     }
 }
