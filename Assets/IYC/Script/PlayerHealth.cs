@@ -1,7 +1,4 @@
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -9,29 +6,31 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private float maxHealth = 100f;
     [SerializeField] private float currentHealth;
 
-    [Header("Zone Damage Effects")]
+    [Header("Blue Zone Effects")]
     [SerializeField] private SpriteRenderer playerSprite;
-    [SerializeField] private Color normalColor = Color.white;
-    [SerializeField] private Color damageColor = new Color(1f, 0.5f, 0.5f);
-    [SerializeField] private GameObject zoneDamageEffect; // 2D 파티클 효과
-    [SerializeField] private AudioClip zoneDamageSound;
+    [SerializeField] private GameObject blueZoneDamageEffect;
 
-    private AudioSource audioSource;
-    private bool isInZone = true;
-    private Coroutine damageFlashCoroutine;
+    private bool isInBlueZone = false;
 
     public System.Action<float, float> OnHealthChanged;
     public System.Action<DamageType> OnDeath;
-    public System.Action<bool> OnZoneStatusChanged;
+    public System.Action<bool> OnBlueZoneStatusChanged;
 
     void Start()
     {
         currentHealth = maxHealth;
-        audioSource = GetComponent<AudioSource>();
         if (playerSprite == null)
             playerSprite = GetComponent<SpriteRenderer>();
 
         OnHealthChanged?.Invoke(currentHealth, maxHealth);
+    }
+
+    public void InstantKill()
+    {
+        currentHealth = 0;
+        OnHealthChanged?.Invoke(currentHealth, maxHealth);
+        Debug.Log("사망");
+        Die(DamageType.BlueZone);
     }
 
     public void TakeDamage(float damage, DamageType damageType)
@@ -39,45 +38,46 @@ public class PlayerHealth : MonoBehaviour
         currentHealth = Mathf.Max(0, currentHealth - damage);
         OnHealthChanged?.Invoke(currentHealth, maxHealth);
 
-        if (damageType == DamageType.Zone)
+        if (damageType == DamageType.BlueZone)
         {
-            // 구역 데미지 효과
-            if (zoneDamageEffect != null && !zoneDamageEffect.activeSelf)
-            {
-                zoneDamageEffect.SetActive(true);
-            }
-
-            if (audioSource != null && zoneDamageSound != null && !audioSource.isPlaying)
-            {
-                audioSource.PlayOneShot(zoneDamageSound);
-            }
-
-            if (isInZone)
-            {
-                isInZone = false;
-                OnZoneStatusChanged?.Invoke(false);
-            }
-
-            // 데미지 플래시 효과
-            if (damageFlashCoroutine != null)
-                StopCoroutine(damageFlashCoroutine);
-            damageFlashCoroutine = StartCoroutine(DamageFlash());
+            // 자기장은 즉사이므로 이 메서드가 호출되면 안됨
+            Debug.LogWarning("자기장은 즉사인데 TakeDamage가 호출되었습니다!");
         }
 
         if (currentHealth <= 0)
         {
+            Debug.Log("사망");
             Die(damageType);
         }
     }
 
-    IEnumerator DamageFlash()
+    public void SetBlueZoneStatus(bool inBlueZone)
     {
-        if (playerSprite != null)
+        if (isInBlueZone != inBlueZone)
         {
-            playerSprite.color = damageColor;
-            yield return new WaitForSeconds(0.1f);
-            playerSprite.color = normalColor;
+            isInBlueZone = inBlueZone;
+            OnBlueZoneStatusChanged?.Invoke(inBlueZone);
+
+            if (!inBlueZone && blueZoneDamageEffect != null)
+            {
+                blueZoneDamageEffect.SetActive(false);
+            }
         }
+    }
+
+    void Die(DamageType cause)
+    {
+        if (cause == DamageType.BlueZone)
+        {
+            Debug.Log("사망 - 자기장에 의한 즉사!");
+        }
+        else
+        {
+            Debug.Log($"사망 - 원인: {cause}");
+        }
+
+        OnDeath?.Invoke(cause);
+        gameObject.SetActive(false);
     }
 
     public void Heal(float amount)
@@ -86,26 +86,5 @@ public class PlayerHealth : MonoBehaviour
         OnHealthChanged?.Invoke(currentHealth, maxHealth);
     }
 
-    void Die(DamageType cause)
-    {
-        OnDeath?.Invoke(cause);
-        gameObject.SetActive(false);
-    }
-
-    public void SetZoneStatus(bool inZone)
-    {
-        if (isInZone != inZone)
-        {
-            isInZone = inZone;
-            OnZoneStatusChanged?.Invoke(inZone);
-
-            if (inZone && zoneDamageEffect != null)
-            {
-                zoneDamageEffect.SetActive(false);
-            }
-        }
-    }
-
     public float GetHealthPercentage() => currentHealth / maxHealth;
-    public bool IsAlive() => currentHealth > 0;
 }
