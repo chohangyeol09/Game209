@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CWhbuttonHoverSound : MonoBehaviour, IPointerEnterHandler
+public class CWH_ButtonHoverSound : MonoBehaviour, IPointerEnterHandler
 {
     public AudioSource audioSource;
     public AudioClip hoverSound;
