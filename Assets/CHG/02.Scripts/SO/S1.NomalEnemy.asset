@@ -18,8 +18,8 @@ MonoBehaviour:
   Sprite: {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
   Damage: 2
   Speed: 10
-  Exp: 3
+  Exp: 1
   SpawnStartTime: 5
   color: {r: 1, g: 0, b: 0, a: 1}
-  MaxHealth: 0
+  MaxHealth: 7
   SpawnStage: 1

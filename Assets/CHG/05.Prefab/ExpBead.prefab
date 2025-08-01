@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 826021594871912911}
   - component: {fileID: 6982536132157811006}
   - component: {fileID: 4837908785549830114}
-  - component: {fileID: -2418446354860738464}
+  - component: {fileID: 6439816989588260847}
   m_Layer: 0
   m_Name: ExpBead
   m_TagString: Exp
@@ -135,7 +135,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 0.8828125}
   m_EdgeRadius: 0
---- !u!114 &-2418446354860738464
+--- !u!114 &6439816989588260847
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -144,7 +144,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1926468301190523915}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7e18bd12cb2123479d818bedd8ab3e1, type: 3}
+  m_Script: {fileID: 11500000, guid: 441b0c4951921774197686589474cd7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Exp: 0

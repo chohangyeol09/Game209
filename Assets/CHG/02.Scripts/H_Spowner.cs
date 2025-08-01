@@ -9,9 +9,14 @@ public class H_Spowner : MonoBehaviour
     [SerializeField] private Transform[] SpownPosition;
     [SerializeField] private H_EnemyDataSO[] AllEnemyData;
 
-    
-    private float _timer = 0;
+    [SerializeField] float _stage1 = 30;
+    [SerializeField] float _stage2 = 60;
+    [SerializeField] float _stage3 = 90;
     public float _spownTime = 1f;
+    
+
+
+    private float _timer = 0;
     private int SpawnCount = 30;
     private float Range = 5f;
     private float _gameTime;
@@ -26,11 +31,11 @@ public class H_Spowner : MonoBehaviour
     {
         _gameTime += Time.deltaTime;
         _timer += Time.deltaTime;
-        if (_gameTime < 20)
+        if (_gameTime < _stage1)
             curStage = 1;
-        else if (_gameTime < 40)
+        else if (_gameTime < _stage2)
             curStage = 2;
-        else if (_gameTime < 60)
+        else if (_gameTime < _stage3)
             curStage = 3;
 
 

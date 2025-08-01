@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5658546724373332747}
   - component: {fileID: 2710905563685245680}
   - component: {fileID: 3491667927619770661}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SquEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -130,6 +130,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Data: {fileID: 0}
+  Health: 0
 --- !u!61 &3491667927619770661
 BoxCollider2D:
   m_ObjectHideFlags: 0
