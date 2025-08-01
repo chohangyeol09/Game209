@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -68,7 +69,16 @@ public class Ku_PlayerUpgradeManager : MonoBehaviour
         }
     }
 
-    public void OnUpgradeComplete(int num)
+    Dictionary<UpgradeType, int> _upgradeType = new Dictionary<UpgradeType, int>() // 자원 저장
+    {
+        {UpgradeType.Band, 0},
+        {UpgradeType.Blood, 0},
+        {UpgradeType.DemonPlane, 0},
+        {UpgradeType.DoubleSwords, 0},
+        //{UpgradeType._water, 0}
+    };  //_upgradeType[UpgradeType.(타입)] 으로 사용
+
+    public void OnUpgradeComplete(UpgradeType type)
     {
         isUpgrade = false;
         upgradePanel.SetActive(false);
@@ -91,9 +101,9 @@ public class Ku_PlayerUpgradeManager : MonoBehaviour
                 otherExp = 0;
             }
         }
-        switch (num)
+        switch (type)
         {
-            case 0:
+            /*case 0:
                 movement.speed += 0.5f;
                 return;
             case 1:
@@ -128,7 +138,7 @@ public class Ku_PlayerUpgradeManager : MonoBehaviour
                 return;
             case 11: weapon.transform.localScale = new Vector3(1, weapon.transform.localScale.y + 0.25f, 1);
                 return;
-            default: return;
+            default: return;*/
         }
     }
 
