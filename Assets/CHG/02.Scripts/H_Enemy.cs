@@ -30,8 +30,8 @@ public class H_Enemy : MonoBehaviour
         _target = GameObject.FindWithTag("Player");
         _playerScript = _target.GetComponent<Ku_PlayerMovement>();
         
-        _boss = GameObject.FindWithTag("Boss");
-        _bossvec = _boss.transform.up;
+        
+        
     }
 
     private void FixedUpdate()
@@ -74,6 +74,12 @@ public class H_Enemy : MonoBehaviour
 
         if (Data.Id == 3 || Data.Id == 4 || Data.Id == 5)
             _oneDir = _target.transform.position - transform.position;
+
+        if(Data.Id == 6)
+        {
+            _boss = GameObject.FindWithTag("Boss");
+            _bossvec = _boss.transform.up;
+        }
 
         _isLive = true;
     }

@@ -11,6 +11,7 @@ public class H_Boss : MonoBehaviour
     [SerializeField] private H_EnemyDataSO CannonBall;
     private H_DangerZone _dangerZone;
     private Ku_PlayerMovement _playerScript;
+    private H_Enemy _enemyScript;
 
     [SerializeField] private GameObject BulletPrefab;
     [SerializeField] private GameObject FireCanon;
@@ -155,17 +156,23 @@ public class H_Boss : MonoBehaviour
 
     #endregion
 
-    /*private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.transform.CompareTag("Bullet"))
+        if (collision.transform.CompareTag("Enemy"))
         {
-            
+            _enemyScript = collision.gameObject.GetComponent<H_Enemy>();
+            Health -= _enemyScript.Data.Damage; 
         }
         else if (collision.transform.CompareTag("Player"))
         {
 
         }
-    }*/
+
+        if (Health < 0)
+        {
+            //¾Øµù
+        }
+    }
 
     private void Spown(H_EnemyDataSO data)
     {
