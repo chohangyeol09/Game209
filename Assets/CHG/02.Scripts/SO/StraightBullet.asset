@@ -22,4 +22,4 @@ MonoBehaviour:
   SpawnStartTime: 0
   color: {r: 1, g: 0, b: 0, a: 1}
   MaxHealth: 24
-  SpawnStage: 0
+  SpawnStage: 9
