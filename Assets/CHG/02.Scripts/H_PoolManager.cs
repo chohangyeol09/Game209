@@ -24,13 +24,11 @@ public class H_PoolManager : MonoBehaviour
     {
         if (data == null)
         {
-            Debug.LogError(" PoolPop called with null data!");
             return null;
         }
 
         if (string.IsNullOrEmpty(data.Name))
         {
-            Debug.LogError(" EnemyDataSO.Name is null or empty!");
             return null;
         }
 

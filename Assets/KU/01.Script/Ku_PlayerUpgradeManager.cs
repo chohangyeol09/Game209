@@ -101,7 +101,7 @@ public class Ku_PlayerUpgradeManager : MonoBehaviour
             case 8:
                 movement.cooldown -= 0.2f;
                 return;
-            case 9:
+            case 9://아직 수정중
                 return;
             case 10: attack.pushDistance += 0.25f;
                 return;
