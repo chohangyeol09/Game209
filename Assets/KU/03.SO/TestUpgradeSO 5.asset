@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visual: {fileID: 21300000, guid: 6855add66d5464e9e8c7c9d50dba2114, type: 3}
   name: Max Health
-  coment: Get a more Mat Health
+  coment: "\uB354 \uB9CE\uC740 \uCD5C\uB300 \uCCB4\uB825\uC744 \uC5BB\uC73C\uC138\uC694!"
   cardNum: 5

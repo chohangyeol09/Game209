@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visual: {fileID: 21300000, guid: ae472dfba7808454798ac6d85506011c, type: 3}
   name: Magnetic
-  coment: Get a wider collection range.
+  coment: "\uACBD\uD5D8\uCE58\uB97C \uC218\uC9D1\uD560\uC218 \uC788\uB294 \uBC94\uC704\uAC00
+    \uB113\uC5B4\uC9D1\uB2C8\uB2E4!"
   cardNum: 7

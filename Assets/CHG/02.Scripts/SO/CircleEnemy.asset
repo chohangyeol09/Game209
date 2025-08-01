@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8aa620462d3f69a4686c259b4345a8b1, type: 3}
+  m_Name: CircleEnemy
+  m_EditorClassIdentifier: 
+  EnemyPrefab: {fileID: 3835469454259560647, guid: 1f156a2b7335d1b44a0c2ea083c0e3b9, type: 3}
+  Id: 7
+  Name: CircleEnemy
+  Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
+  Damage: 3
+  Speed: 0
+  Exp: 2
+  SpawnStartTime: 0
+  color: {r: 0.10855175, g: 0.6037736, b: 0, a: 1}
+  MaxHealth: 20
+  SpawnStage: 0

@@ -16,10 +16,10 @@ MonoBehaviour:
   Id: 1
   Name: NomalEnemy
   Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  Damage: 0
-  Speed: 15
+  Damage: 5
+  Speed: 2
   Exp: 7
   SpawnStartTime: 0
   color: {r: 1, g: 0.42968318, b: 0.033018887, a: 1}
-  MaxHealth: 23
+  MaxHealth: 12
   SpawnStage: 2

@@ -163,9 +163,9 @@ public class H_Boss : MonoBehaviour
             _enemyScript = collision.gameObject.GetComponent<H_Enemy>();
             Health -= _enemyScript.Data.Damage; 
         }
-        else if (collision.transform.CompareTag("Player"))
+        else if (collision.gameObject.layer == 8)
         {
-
+            
         }
 
         if (Health < 0)

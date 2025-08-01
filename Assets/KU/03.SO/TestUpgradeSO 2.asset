@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visual: {fileID: 21300000, guid: d297366419d974fdcba183044f6f3007, type: 3}
   name: DemonPlane
-  coment: Get a lot Damage But you get low HP
+  coment: "\uC545\uB9C8\uC640 \uACC4\uC57D\uD574 \uAC15\uB825\uD55C \uD798\uC744
+    \uC5BB\uC9C0\uB9CC \uB0AE\uC740 \uCCB4\uB825\uC744 \uAC16\uAC8C\uB429\uB2C8\uB2E4!"
   cardNum: 2
