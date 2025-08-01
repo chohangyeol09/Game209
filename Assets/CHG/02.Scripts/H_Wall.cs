@@ -7,6 +7,8 @@ public class H_Wall : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        Debug.Log(collision.gameObject.name);
+
         if (collision.gameObject.CompareTag("Enemy"))
         {
             _enemyScript = collision.gameObject.GetComponent<H_Enemy>();

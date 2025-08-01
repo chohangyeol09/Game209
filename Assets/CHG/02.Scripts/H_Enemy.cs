@@ -13,6 +13,7 @@ public class H_Enemy : MonoBehaviour
     private GameObject _target;
     private bool _isLive;
     private bool _canAttack = true;
+    private bool _canMove = true;
 
     [Header("stets")]
     public int Health;
@@ -40,6 +41,9 @@ public class H_Enemy : MonoBehaviour
     private void FixedUpdate()
     {
         if (!_isLive) return;
+
+        if (!_canMove) return;
+
         switch (Data.Id)
         {
             case 1:
@@ -118,6 +122,7 @@ public class H_Enemy : MonoBehaviour
 
             _playerScript.AttackPlayer(_damage);
             _canAttack = false;
+            if (!_isLive) return;
             StartCoroutine(CanAttack());
 
         }
