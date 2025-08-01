@@ -16,8 +16,8 @@ MonoBehaviour:
   Id: 5
   Name: Bullet
   Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  Damage: 29
-  Speed: 60
+  Damage: 8
+  Speed: 400
   Exp: 0
   SpawnStartTime: 0
   color: {r: 1, g: 0, b: 0, a: 1}

@@ -34,6 +34,13 @@ public class H_Enemy : MonoBehaviour
         _playerScript = _target.GetComponent<Ku_PlayerMovement>();
     }
 
+
+    private void OnEnable()
+    {
+        _canAttack = true;
+        _canMove = true;
+    }
+
     private void Update()
     {
         if (Health <= 0)
@@ -103,11 +110,6 @@ public class H_Enemy : MonoBehaviour
             _bossvec = _boss.transform.up;
         }
 
-        if (Data.Id == 7)
-        {
-            Debug.Log("spown");
-        }
-
         _isLive = true;
     }
 
@@ -122,17 +124,48 @@ public class H_Enemy : MonoBehaviour
             expbead.GetComponent<Ku_ExpTest>().Exp = Data.Exp;
         }
 
+        int h = Ku_PlayerUpgradeManager.Instance._upgradeType[UpgradeType.Blood] * 2;
+        _playerScript.HealPlayer(h);
+
         _isLive = false;
         _rb2.linearVelocity = Vector3.zero;
 
         H_PoolManager.Instance.EnemyPush(Data, gameObject);
     }
 
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (!_isLive) return;
+
+
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            if (Data.Id == 4 || Data.Id == 5 || Data.Id == 6)
+            {
+                Dead();
+            }
+
+            if (_canAttack && gameObject.activeInHierarchy)
+            {
+                _playerScript.AttackPlayer(_damage);
+                _canAttack = false;
+                StartCoroutine(CanAttack());
+            }
+        }
+
+        if (collision.gameObject.layer == 6)
+        {
+            if (Data.Id == 4 || Data.Id == 5 || Data.Id == 6)
+            {
+                _canMove = false;
+                Debug.Log(_canMove);
+            }
+        }
+    }
+
     //¼öÁ¤
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log(collision.gameObject.name);
-
         if (collision.gameObject.CompareTag("Wall"))
         {
             H_PoolManager.Instance.EnemyPush(Data, gameObject);
@@ -151,11 +184,12 @@ public class H_Enemy : MonoBehaviour
                 Dead();
             }
 
-            if (!_canAttack) return;
-
-            _playerScript.AttackPlayer(_damage);
-            _canAttack = false;
-            StartCoroutine(CanAttack());
+            if (_canAttack && gameObject.activeInHierarchy)
+            {
+                _playerScript.AttackPlayer(_damage);
+                _canAttack = false;
+                StartCoroutine(CanAttack());
+            }
         }
 
         if (collision.gameObject.layer == 6)
