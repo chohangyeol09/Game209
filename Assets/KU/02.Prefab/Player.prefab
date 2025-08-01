@@ -165,6 +165,9 @@ MonoBehaviour:
   testMesh: {fileID: 0}
   upgradePanel: {fileID: 0}
   weapon: {fileID: 313392904280755015}
+  expBar: {fileID: 0}
+  lvText: {fileID: 0}
+  nowExpText: {fileID: 0}
 --- !u!1 &1334146726813017872
 GameObject:
   m_ObjectHideFlags: 0
@@ -440,6 +443,7 @@ MonoBehaviour:
   nowHp: 100
   maxHp: 100
   upgradeManager: {fileID: 2129698568140527554}
+  hpText: {fileID: 0}
   speed: 5
 --- !u!82 &8153798147701358182
 AudioSource:

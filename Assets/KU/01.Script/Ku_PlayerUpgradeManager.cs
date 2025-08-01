@@ -1,26 +1,33 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Ku_PlayerUpgradeManager : MonoBehaviour
 {
-    public int nowExp = 0;
-    private int limitExp = 10;
+    public float nowExp = 0;
+    private float limitExp = 10;
     private int level = 1;
-    private int otherExp = 0;
+    private float otherExp = 0;
 
     public bool isUpgrade = false;
-    [SerializeField] private Iyc_PlayerController movement;
+    [SerializeField] private Ku_PlayerMovement movement;
     [SerializeField] private Ku_PlayerWeaponAttack attack;
 
-    [SerializeField] private TextMeshProUGUI testMesh;
     [SerializeField] private GameObject upgradePanel;
     [SerializeField] private GameObject weapon;
+    [SerializeField] private Scrollbar expBar;
+    [SerializeField] private TextMeshProUGUI lvText;
+    [SerializeField] private TextMeshProUGUI nowExpText;
+
 
     private float targetScale = 3;
     private void Update()
     {
+        expBar.size = nowExp/limitExp;
+        lvText.text = $"Lv: {level}";
+        nowExpText.text = $"{(int)(nowExp * 100 / limitExp)}%";
+
         transform.localScale = new Vector3(targetScale, targetScale, targetScale);
-        testMesh.text = $"nowExp : {nowExp}, limitExp : {limitExp}, level : {level}";
 
         if (!isUpgrade && nowExp >= limitExp)
         {
@@ -54,7 +61,7 @@ public class Ku_PlayerUpgradeManager : MonoBehaviour
 
         while (otherExp > 0 && !isUpgrade)
         {
-            int expNeeded = limitExp - nowExp;
+            float expNeeded = limitExp - nowExp;
 
             if (otherExp >= expNeeded)
             {

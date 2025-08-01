@@ -38,4 +38,32 @@ public class CWH_ObstacleSpawner : MonoBehaviour
         // 소환
         Instantiate(wallPrefab, spawnPos, rotation, wallParent);
     }
+
+#if UNITY_EDITOR
+    private void OnDrawGizmos()
+    {
+        if (sectorCount < 3) return;
+
+        float anglePerSector = 360f / sectorCount;
+
+        Gizmos.color = Color.red;
+
+        for (int i = 0; i < sectorCount; i++)
+        {
+            float angleDeg = (i + 0.5f) * anglePerSector;
+            float rad = angleDeg * Mathf.Deg2Rad;
+
+            Vector3 dir = new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0f);
+            Vector3 spawnPos = transform.position + dir * spawnRadius;
+
+            Gizmos.DrawWireSphere(spawnPos, 0.2f);
+            Gizmos.DrawLine(transform.position, spawnPos);
+        }
+
+        // 원형 스폰 반지름 시각화
+        Gizmos.color = new Color(1f, 1f, 0f, 0.3f);
+        UnityEditor.Handles.color = Gizmos.color;
+        UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.forward, spawnRadius);
+    }
+#endif
 }

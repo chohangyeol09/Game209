@@ -1,4 +1,5 @@
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 
 public class Ku_PlayerMovement : MonoBehaviour
@@ -13,6 +14,7 @@ public class Ku_PlayerMovement : MonoBehaviour
 
     [SerializeField] Ku_PlayerUpgradeManager upgradeManager;
 
+    [SerializeField] private TextMeshProUGUI hpText;
     public float speed = 5f;
 
     private AudioSource playerDieAudio;
@@ -22,6 +24,7 @@ public class Ku_PlayerMovement : MonoBehaviour
     }
     private void Update()
     {
+        hpText.text = $"{nowHp}\n{maxHp}";
         if(nowHp <= 0)
         {
             Debug.Log("Game Over");
