@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: StraightBullet
   m_EditorClassIdentifier: 
   EnemyPrefab: {fileID: 8232952991763877726, guid: 165e9c2e75f7ab54384740999fa6927a, type: 3}
-  Id: 5
+  Id: 6
   Name: Bullet
   Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   Damage: 29

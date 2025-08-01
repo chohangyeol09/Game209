@@ -1011,7 +1011,7 @@ Transform:
   m_GameObject: {fileID: 1310755222}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.96507436, y: 7.7538943, z: -0.0030275788}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1380,7 +1380,7 @@ GameObject:
   - component: {fileID: 1581333941}
   m_Layer: 0
   m_Name: Boss
-  m_TagString: Untagged
+  m_TagString: Boss
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1469,6 +1469,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BulletSO: {fileID: 11400000, guid: f1fc5c693773cbe46abc07f35674cf42, type: 2}
+  StraightBull: {fileID: 11400000, guid: 211c8973c479b23429cb90b523fd1cbc, type: 2}
   CannonBall: {fileID: 11400000, guid: 9d619020938dd5648aaca4fe6adb1bca, type: 2}
   BulletPrefab: {fileID: 8232952991763877726, guid: 165e9c2e75f7ab54384740999fa6927a, type: 3}
   FireCanon: {fileID: 1125777309}
