@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8aa620462d3f69a4686c259b4345a8b1, type: 3}
-  m_Name: S1.SquEnemy 1
+  m_Name: S2.NomalEnemy
   m_EditorClassIdentifier: 
-  EnemyPrefab: {fileID: 8542369977999990975, guid: 33c177d17a651c54093438f35ba9bbb7, type: 3}
-  Id: 2
-  Name: SquEnemy
-  Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
+  EnemyPrefab: {fileID: 4941801667898874765, guid: c51cc2549b5fab745bccd695145df7c9, type: 3}
+  Id: 1
+  Name: NomalEnemy
+  Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   Damage: 0
-  Speed: 7.9
-  Exp: 12
-  SpawnStartTime: 40.21
-  color: {r: 0, g: 0.033400282, b: 0.49056602, a: 1}
-  MaxHealth: 100
+  Speed: 15
+  Exp: 7
+  SpawnStartTime: 0
+  color: {r: 1, g: 0.42968318, b: 0.033018887, a: 1}
+  MaxHealth: 30
   SpawnStage: 2

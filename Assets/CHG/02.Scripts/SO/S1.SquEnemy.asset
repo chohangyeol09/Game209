@@ -21,4 +21,5 @@ MonoBehaviour:
   Exp: 6
   SpawnStartTime: 2.95
   color: {r: 0.08018869, g: 0.14064468, b: 1, a: 1}
-  SpawnStage: 3
+  MaxHealth: 0
+  SpawnStage: 2

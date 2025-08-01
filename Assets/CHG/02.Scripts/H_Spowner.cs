@@ -9,6 +9,7 @@ public class H_Spowner : MonoBehaviour
     [SerializeField] private Transform[] SpownPosition;
     [SerializeField] private H_EnemyDataSO[] AllEnemyData;
 
+    
     private float _timer = 0;
     public float _spownTime = 1f;
     private int SpawnCount = 30;
@@ -18,6 +19,7 @@ public class H_Spowner : MonoBehaviour
     private void Awake()
     {
         SpownPosition = GetComponentsInChildren<Transform>();
+        
     }
 
     private void Update()
