@@ -21,11 +21,11 @@ public class H_Spowner : MonoBehaviour
     private int SpawnCount = 30;
     private float Range = 5f;
     private float _gameTime;
-    private int curStage = 1;
-    private int prevStage = 1;
+    private int _curStage = 1;
+    private int _prevStage = 1;
     private void Awake()
     {
-        SpownPosition = GetComponentsInChildren<Transform>();
+        SpownPosition = GetComponentsInChildren<Transform>().Where(t => t != transform).ToArray(); ;
         
     }
 
@@ -40,22 +40,23 @@ public class H_Spowner : MonoBehaviour
         // 현재 스테이지 판단
         if (_gameTime < _stage1)
         {
-            curStage = 1;
+            _curStage = 1;
         }
         else if (_gameTime < _stage2)
         {
-            curStage = 2;
+            _curStage = 2;
         }
         else if (_gameTime < _stage3)
         {
-            curStage = 3;
+            _curStage = 3;
         }
 
         // 스테이지가 바뀌었을 때 한 번만 실행
-        if (curStage != prevStage)
+        if (_curStage != _prevStage)
         {
             CreateCircleEnemy();
-            prevStage = curStage;
+            _prevStage = _curStage;
+            Debug.Log(_curStage);
         }
 
         if (_timer > _spownTime)
@@ -84,7 +85,7 @@ public class H_Spowner : MonoBehaviour
 
     private void Spown()
     {
-        var spawn = AllEnemyData.Where(d => d.SpawnStartTime <= _gameTime && d.SpawnStage == curStage).ToList();
+        var spawn = AllEnemyData.Where(d => d.SpawnStartTime <= _gameTime && d.SpawnStage == _curStage).ToList();
         if (spawn.Count == 0) return;
         H_EnemyDataSO data = spawn[Random.Range(0, spawn.Count)];
         GameObject enemy = H_PoolManager.Instance.PoolPop(data);
