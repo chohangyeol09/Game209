@@ -37,9 +37,9 @@ public class H_Boss : MonoBehaviour
     {
         AttackPetton = new Action[]
         {
-            /*LongAttack,
+            LongAttack,
             DangerZone,
-            Cannon,*/
+            Cannon,
             Spin
         };
     }
@@ -66,12 +66,20 @@ public class H_Boss : MonoBehaviour
 
 
     #region 보스 패턴
-    [ContextMenu("Shoot")]
+   
     private IEnumerator Shoot(string s)
     {
-        for (int i = 0; i < 10; i++)
+        float wait = 0.2f;
+        float loop = 10;
+        if (s == "Spin")
         {
-            FireCanon.transform.DOPunchPosition(new Vector3(0f, 0.02f, 0), 0.2f);
+            wait = 0.1f;
+            loop = 20;
+        }
+
+        for (int i = 0; i < loop; i++)
+        {
+            FireCanon.transform.DOPunchPosition(new Vector3(0f, 0.1f, 0), 0.1f);
 
             if (s == "Long")
             {
@@ -83,7 +91,8 @@ public class H_Boss : MonoBehaviour
             }
 
 
-                yield return new WaitForSeconds(0.2f);
+
+            yield return new WaitForSeconds(wait);
         }
 
     }
@@ -125,10 +134,23 @@ public class H_Boss : MonoBehaviour
     private void Spin()
     {
         _isSpin = true;
-        gameObject.transform.DORotate(new Vector3(0, 0, transform.rotation.z + 180), 2).OnComplete(() => 
-        gameObject.transform.DORotate(_target.transform.position,0.3f).OnComplete(() =>
-        _isSpin = false).SetEase(Ease.InOutSine));
+
+        float startZ = transform.eulerAngles.z;
+        float endZ = startZ + 360f;
+
         StartCoroutine(Shoot("Spin"));
+        // 한 바퀴 회전
+        transform.DORotate(new Vector3(0, 0, endZ), 1f, RotateMode.FastBeyond360).OnComplete(() =>
+        {
+            transform.DORotate(new Vector3(0, 0, endZ), 1f, RotateMode.FastBeyond360).OnComplete(() =>
+            {
+                Vector3 dir = _target.transform.position - transform.position;
+                float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+
+                // 플레이어를 바라보는 각도로 0.2초 동안 회전
+                transform.DORotate(new Vector3(0, 0, angle - 90f), 0.2f).SetEase(Ease.InOutSine).OnComplete(() => _isSpin = false);
+            });
+        });
     }
 
     #endregion
