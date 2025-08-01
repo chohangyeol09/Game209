@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class Ku_PlayerWeaponRotate : MonoBehaviour
+public class Ku_PlayerWeapon : MonoBehaviour
 {
     [SerializeField] private GameObject playerWeapon;
     [SerializeField] private float rotationDuration = 0.2f;
@@ -17,15 +17,14 @@ public class Ku_PlayerWeaponRotate : MonoBehaviour
         float startZ = playerTransform.eulerAngles.z;
         playerWeapon.transform.rotation = Quaternion.Euler(0, 0, startZ);
 
-        // 360도 한 바퀴 회전
         playerWeapon.transform.DOKill();
         playerWeapon.transform
             .DORotate(new Vector3(0, 0, startZ + 360f), rotationDuration, RotateMode.FastBeyond360)
             .SetEase(Ease.OutSine)
-            .OnComplete(() => DeactivateWeapon());
+            .OnComplete(() => DeleteWeapon());
     }
 
-    private void DeactivateWeapon()
+    private void DeleteWeapon()
     {
         playerWeapon.SetActive(false);
     }
