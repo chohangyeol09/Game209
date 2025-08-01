@@ -15,4 +15,4 @@ MonoBehaviour:
   visual: {fileID: 21300000, guid: 45193673a73d740639c6da68a79f253c, type: 3}
   name: PushPower
   coment: "\uC801\uC744 \uB354 \uBA40\uB9AC \uBC00\uCCD0\uB0B4\uC138\uC694!"
-  cardNum: 10
+  upgradeType: 9

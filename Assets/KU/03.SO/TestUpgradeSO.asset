@@ -15,4 +15,4 @@ MonoBehaviour:
   visual: {fileID: 21300000, guid: 8acfdb87041c143089569d446383a47d, type: 3}
   name: FastMove
   coment: "\uB354 \uBE68\uB9AC \uC6C0\uC9C1\uC774\uC138\uC694!"
-  cardNum: 0
+  upgradeType: 5

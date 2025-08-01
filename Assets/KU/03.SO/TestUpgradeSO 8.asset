@@ -15,4 +15,4 @@ MonoBehaviour:
   visual: {fileID: 21300000, guid: cbf6a59bfd392415c8ae211a0e48dce3, type: 3}
   name: FastAttack
   coment: "\uB354 \uBE60\uB974\uAC8C \uACF5\uACA9\uD558\uC138\uC694!"
-  cardNum: 8
+  upgradeType: 4

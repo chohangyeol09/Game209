@@ -16,4 +16,4 @@ MonoBehaviour:
   name: Viking
   coment: "\uC870\uAE08\uC758 \uCD5C\uB300 \uCCB4\uB825\uACFC \uC870\uAE08\uC758
     \uACF5\uACA9\uB825\uC744 \uC5BB\uC73C\uC138\uC694!"
-  cardNum: 6
+  upgradeType: 11
