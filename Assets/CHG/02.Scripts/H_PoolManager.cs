@@ -26,12 +26,10 @@ public class H_PoolManager : MonoBehaviour
         {
             return null;
         }
-
         if (string.IsNullOrEmpty(data.Name))
         {
             return null;
         }
-
         string key = data.Name;
 
         if (!Enemypools.ContainsKey(key)) //없으면 보충

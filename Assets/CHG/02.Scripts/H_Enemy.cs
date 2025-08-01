@@ -9,7 +9,6 @@ public class H_Enemy : MonoBehaviour
     private SpriteRenderer _spriteRen;
     private Color _color;
 
-    private GameObject _boss;
     private GameObject _target;
     private bool _isLive;
 
@@ -18,6 +17,10 @@ public class H_Enemy : MonoBehaviour
     private int _maxHealth;
     private float _speed;
     private int _damage;
+
+    private GameObject _boss;
+    private Vector3 _bossvec;
+
     private Vector2 _oneDir;
     private Vector2 dirVec;
     private void Awake()
@@ -26,6 +29,9 @@ public class H_Enemy : MonoBehaviour
         _spriteRen = GetComponent<SpriteRenderer>();
         _target = GameObject.FindWithTag("Player");
         _playerScript = _target.GetComponent<Ku_PlayerMovement>();
+        
+        
+        
     }
 
     private void FixedUpdate()
@@ -44,7 +50,7 @@ public class H_Enemy : MonoBehaviour
                 _rb2.linearVelocity = _oneDir * _speed * Time.fixedDeltaTime;
                 break;
             case 6:
-                _rb2.linearVelocity = transform.parent.forward * _speed * Time.deltaTime;
+                _rb2.linearVelocity = _bossvec * _speed * Time.deltaTime;
                 break;
 
 
@@ -69,6 +75,12 @@ public class H_Enemy : MonoBehaviour
         if (Data.Id == 3 || Data.Id == 4 || Data.Id == 5)
             _oneDir = _target.transform.position - transform.position;
 
+        if(Data.Id == 6)
+        {
+            _boss = GameObject.FindWithTag("Boss");
+            _bossvec = _boss.transform.up;
+        }
+
         _isLive = true;
     }
 
@@ -76,7 +88,7 @@ public class H_Enemy : MonoBehaviour
     private void Dead()
     {
         H_AudioManager.Instance.SfxPlay(H_AudioManager.Sfx.EnemyDead);
-        if (Data.Id != 4 && Data.Id != 5)
+        if (Data.Id != 4 && Data.Id != 5 && Data.Id != 6)
         {
             Debug.Log(Data.Id);
             GameObject expbead = H_PoolManager.Instance.ExpPop();
@@ -94,7 +106,7 @@ public class H_Enemy : MonoBehaviour
     {
         if (!_isLive) return;
 
-        if (Data.Id == 4 || Data.Id == 5)
+        if (Data.Id == 4 || Data.Id == 5 || Data.Id == 6)
         {
             if (collision.gameObject.CompareTag("Player"))
             {

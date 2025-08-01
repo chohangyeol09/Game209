@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Ku_PlayerUpgradeManager : MonoBehaviour
 {
@@ -9,16 +10,19 @@ public class Ku_PlayerUpgradeManager : MonoBehaviour
     private int otherExp = 0;
 
     public bool isUpgrade = false;
-    [SerializeField] private Iyc_PlayerController movement;
+    [SerializeField] private Ku_PlayerMovement movement;
     [SerializeField] private Ku_PlayerWeaponAttack attack;
 
     [SerializeField] private TextMeshProUGUI testMesh;
     [SerializeField] private GameObject upgradePanel;
     [SerializeField] private GameObject weapon;
+    [SerializeField] private Scrollbar expBar;
 
     private float targetScale = 3;
     private void Update()
     {
+        expBar.size = nowExp/100;
+
         transform.localScale = new Vector3(targetScale, targetScale, targetScale);
         testMesh.text = $"nowExp : {nowExp}, limitExp : {limitExp}, level : {level}";
 
