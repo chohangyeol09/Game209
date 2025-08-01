@@ -5,7 +5,8 @@ using System.Collections.Generic;
 public class BlueZone : MonoBehaviour
 {
     [Header("Zone Mode")]
-    [SerializeField] private bool useHexagonMode = false; // false = 원형(PUBG), true = 6각형
+    [SerializeField] private bool useHexagonMode = false;
+    [SerializeField] public bool useSuperHexagonMode = false;
 
     [Header("General Settings")]
     [SerializeField] private float mapSize = 100f;
@@ -13,7 +14,7 @@ public class BlueZone : MonoBehaviour
     [SerializeField] private bool instantKill = true;
     [SerializeField] private LayerMask playerLayer;
 
-    [Header("Circle Mode Settings 안쓰는거 아는데 버리기 너무 아까웠음")]
+    [Header("Circle Mode Settings (PUBG Style)")]
     [SerializeField] private int totalPhases = 8;
     [SerializeField] private float[] phaseDelayTimes = { 30f, 20f, 20f, 15f, 15f, 10f, 10f, 5f };
     [SerializeField] private float[] phaseShrinkTimes = { 20f, 15f, 15f, 10f, 10f, 8f, 8f, 5f };
@@ -24,7 +25,13 @@ public class BlueZone : MonoBehaviour
     [SerializeField] private Color redSegmentColor = Color.red;
     [SerializeField] private ParticleSystem destroyParticles;
     [SerializeField] private AudioClip destroySound;
-    [SerializeField] private AudioClip redSegmentSound; // 빨간색 통로 생성 사운드
+    [SerializeField] private AudioClip redSegmentSound;
+
+    [Header("Super Hexagon Mode Settings")]
+    [SerializeField] private GameObject hexagonZonePrefab;
+    [SerializeField] public float superHexagonSpawnInterval = 2f;
+    [SerializeField] private bool respawnAfterDestroy = true;
+    [SerializeField] private int maxActiveZones = 10;
 
     [Header("Visual Settings")]
     [SerializeField] private int circleSegments = 128;
@@ -65,6 +72,10 @@ public class BlueZone : MonoBehaviour
     private Vector2 currentCenter;
     private float currentRadius;
 
+    // Super Hexagon 모드 변수
+    private List<GameObject> activeHexagonZones = new List<GameObject>();
+    private bool isMasterZone = true;
+
     // 이벤트
     public System.Action<int> OnPhaseStart;
     public System.Action<float> OnTimerUpdate;
@@ -82,7 +93,11 @@ public class BlueZone : MonoBehaviour
             Debug.LogWarning("Target Position이 설정되지 않았습니다. (0,0)으로 수축합니다.");
         }
 
-        if (useHexagonMode)
+        if (useHexagonMode && useSuperHexagonMode && isMasterZone)
+        {
+            StartSuperHexagonMode();
+        }
+        else if (useHexagonMode)
         {
             StartHexagonMode();
         }
@@ -92,7 +107,7 @@ public class BlueZone : MonoBehaviour
         }
     }
 
-    //원형모드
+    // ===== 원형 모드 (PUBG 스타일) =====
     void StartCircleMode()
     {
         currentBlueZoneCenter = Vector2.zero;
@@ -279,7 +294,7 @@ public class BlueZone : MonoBehaviour
         }
     }
 
-    //6각형 모드
+    // ===== 6각형 모드 =====
     void StartHexagonMode()
     {
         currentCenter = transform.position;
@@ -331,64 +346,124 @@ public class BlueZone : MonoBehaviour
         blueFillMeshRenderer.sortingOrder = 5;
     }
 
-    IEnumerator RunHexagonZone()
+    // ===== Super Hexagon 모드 =====
+    void StartSuperHexagonMode()
+    {
+        if (hexagonZonePrefab == null)
+        {
+            Debug.LogError("Super Hexagon 모드를 사용하려면 HexagonZonePrefab을 설정해주세요!");
+            StartHexagonMode();
+            return;
+        }
+
+        Debug.Log("Super Hexagon 모드 시작!");
+        StartCoroutine(SpawnMultipleHexagons());
+    }
+
+    IEnumerator SpawnMultipleHexagons()
     {
         while (true)
         {
-            // 새 자기장 생성
-            zoneDestroyed = false;
-            currentRadius = mapSize;
-            currentCenter = transform.position;
-            killedPlayers.Clear();
+            if (activeHexagonZones.Count < maxActiveZones)
+            {
+                SpawnSingleHexagon();
+            }
+            else
+            {
+                Debug.Log($"최대 자기장 수({maxActiveZones})에 도달했습니다.");
+            }
 
-            CheckForEnemies();
-            SelectRedSegment();
-            ShowZone();
-            //UpdateHexagon();
-
-            Debug.Log($"새 자기장 생성! 다음 자기장까지 {hexagonInterval}초");
-
-            // 수축 시작 (별도 코루틴)
-            Coroutine shrinkCoroutine = StartCoroutine(ShrinkHexagon());
-
-            // hexagonInterval만큼 대기
-            yield return new WaitForSeconds(hexagonInterval);
-
-            // 시간이 되면 현재 자기장 강제 종료
-            //StopCoroutine(shrinkCoroutine);
-
-            // 파괴 효과 (선택사항)
-            //if (currentRadius > 0 && !zoneDestroyed)
-            //{
-            //    Debug.Log("시간 초과로 자기장 강제 제거");
-            //    yield return StartCoroutine(ForceDestroyEffect());
-            //}
-
-            HideZone();
+            yield return new WaitForSeconds(superHexagonSpawnInterval);
         }
     }
 
-    IEnumerator ForceDestroyEffect()
+    void SpawnSingleHexagon()
     {
-        // 강제 제거 시 효과
-        float duration = 0.5f;
-        float elapsed = 0f;
+        GameObject newZone = Instantiate(hexagonZonePrefab, transform.position, Quaternion.identity);
+        newZone.name = $"HexagonZone_{activeHexagonZones.Count}";
 
-        while (elapsed < duration)
+        BlueZone zoneScript = newZone.GetComponent<BlueZone>();
+        if (zoneScript != null)
         {
-            elapsed += Time.deltaTime;
-            float t = elapsed / duration;
-            float alpha = Mathf.Lerp(1f, 0f, t);
+            zoneScript.isMasterZone = false;
+            zoneScript.useHexagonMode = true;
+            zoneScript.useSuperHexagonMode = false;
 
-            for (int i = 0; i < 6; i++)
+            // 설정 복사
+            zoneScript.mapSize = mapSize;
+            zoneScript.targetPosition = targetPosition;
+            zoneScript.instantKill = instantKill;
+            zoneScript.playerLayer = playerLayer;
+            zoneScript.hexagonShrinkSpeed = hexagonShrinkSpeed;
+            zoneScript.redSegmentColor = redSegmentColor;
+            zoneScript.destroyParticles = destroyParticles;
+            zoneScript.destroySound = destroySound;
+            zoneScript.blueZoneColor = blueZoneColor;
+            zoneScript.zoneThickness = zoneThickness;
+            zoneScript.fillZone = fillZone;
+            zoneScript.fillColor = fillColor;
+
+            zoneScript.OnZoneDestroyed += () => OnHexagonDestroyed(newZone);
+        }
+
+        activeHexagonZones.Add(newZone);
+        Debug.Log($"새 자기장 생성! 현재 활성 자기장: {activeHexagonZones.Count}개");
+    }
+
+    void OnHexagonDestroyed(GameObject zone)
+    {
+        activeHexagonZones.Remove(zone);
+        Debug.Log($"자기장 파괴됨! 남은 자기장: {activeHexagonZones.Count}개");
+
+        if (respawnAfterDestroy && isMasterZone)
+        {
+            StartCoroutine(RespawnAfterDelay());
+        }
+    }
+
+    IEnumerator RespawnAfterDelay()
+    {
+        yield return new WaitForSeconds(1f);
+        SpawnSingleHexagon();
+    }
+
+    IEnumerator RunHexagonZone()
+    {
+        if (useSuperHexagonMode && !isMasterZone)
+        {
+            zoneDestroyed = false;
+
+            CheckForEnemies();
+            SelectRedSegment();
+
+            yield return StartCoroutine(ShrinkHexagon());
+
+            if (!zoneDestroyed)
             {
-                Color color = hexagonSegments[i].startColor;
-                color.a = alpha;
-                hexagonSegments[i].startColor = color;
-                hexagonSegments[i].endColor = color;
+                Debug.Log($"{gameObject.name} - 완전히 수축됨");
             }
 
-            yield return null;
+            if (OnZoneDestroyed != null)
+                OnZoneDestroyed.Invoke();
+
+            Destroy(gameObject, 0.5f);
+        }
+        else
+        {
+            while (true)
+            {
+                zoneDestroyed = false;
+
+                CheckForEnemies();
+                SelectRedSegment();
+
+                yield return StartCoroutine(ShrinkHexagon());
+
+                Debug.Log($"다음 자기장까지 {hexagonInterval}초 대기");
+                yield return new WaitForSeconds(hexagonInterval);
+
+                ResetHexagon();
+            }
         }
     }
 
@@ -401,7 +476,6 @@ public class BlueZone : MonoBehaviour
 
     void SelectRedSegment()
     {
-        // 초기 빨간색 통로 설정 (수축 중에는 CheckAndUpdateRedSegment에서 처리)
         if (!hasEnemies)
         {
             redSegmentIndex = Random.Range(0, 6);
@@ -424,8 +498,6 @@ public class BlueZone : MonoBehaviour
             {
                 hexagonSegments[i].startColor = redSegmentColor;
                 hexagonSegments[i].endColor = redSegmentColor;
-
-                // 빨간색 통로 생성 효과 (선택사항)
                 StartCoroutine(FlashSegment(i));
             }
             else
@@ -438,7 +510,6 @@ public class BlueZone : MonoBehaviour
 
     IEnumerator FlashSegment(int segmentIndex)
     {
-        // 빨간색 통로가 생길 때 깜빡임 효과
         LineRenderer segment = hexagonSegments[segmentIndex];
         float flashDuration = 0.5f;
         float elapsed = 0f;
@@ -456,7 +527,6 @@ public class BlueZone : MonoBehaviour
             yield return null;
         }
 
-        // 최종 색상으로 설정
         segment.startColor = redSegmentColor;
         segment.endColor = redSegmentColor;
     }
@@ -471,9 +541,7 @@ public class BlueZone : MonoBehaviour
             currentRadius = Mathf.MoveTowards(currentRadius, targetRadius, hexagonShrinkSpeed * Time.deltaTime);
             currentCenter = Vector2.MoveTowards(currentCenter, targetPos, hexagonShrinkSpeed * Time.deltaTime * 0.5f);
 
-            // 수축 중에도 적 체크 및 빨간색 통로 업데이트
             CheckAndUpdateRedSegment();
-
             UpdateHexagon();
             CheckPlayersInHexagon();
 
@@ -491,19 +559,16 @@ public class BlueZone : MonoBehaviour
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
         bool currentHasEnemies = enemies.Length > 0;
 
-        // 적 상태가 변경되었을 때만 업데이트
         if (currentHasEnemies != hasEnemies)
         {
             hasEnemies = currentHasEnemies;
 
             if (!hasEnemies && redSegmentIndex == -1)
             {
-                // 적이 사라졌고 빨간색 통로가 없다면 생성
                 redSegmentIndex = Random.Range(0, 6);
                 Debug.Log($"적이 사라짐! 빨간색 통로 생성: 선분 {redSegmentIndex}");
                 UpdateSegmentColors();
 
-                // 빨간색 통로 생성 사운드 재생
                 if (audioSource != null && redSegmentSound != null)
                 {
                     audioSource.PlayOneShot(redSegmentSound);
@@ -511,7 +576,6 @@ public class BlueZone : MonoBehaviour
             }
             else if (hasEnemies && redSegmentIndex >= 0)
             {
-                // 적이 나타났고 빨간색 통로가 있다면 제거
                 redSegmentIndex = -1;
                 Debug.Log("적이 나타남! 빨간색 통로 제거");
                 UpdateSegmentColors();
@@ -867,16 +931,10 @@ public class BlueZone : MonoBehaviour
         }
     }
 
-    public bool IsHexagonMode()
-    {
-        return useHexagonMode;
-    }
-
     public float GetDistanceFromBlueZone(Vector2 position)
     {
         if (useHexagonMode)
         {
-            // 6각형의 경우 간단히 중심으로부터의 거리로 계산
             return currentRadius - Vector2.Distance(position, currentCenter);
         }
         else
@@ -884,6 +942,39 @@ public class BlueZone : MonoBehaviour
             float distance = Vector2.Distance(position, currentBlueZoneCenter);
             return currentBlueZoneRadius - distance;
         }
+    }
+
+    public bool IsHexagonMode()
+    {
+        return useHexagonMode;
+    }
+
+    public void SetSpawnInterval(float interval)
+    {
+        superHexagonSpawnInterval = interval;
+        Debug.Log($"생성 간격 변경: {interval}초");
+    }
+
+    public void SetRespawnAfterDestroy(bool value)
+    {
+        respawnAfterDestroy = value;
+        Debug.Log($"파괴 후 재생성: {value}");
+    }
+
+    public void ClearAllActiveZones()
+    {
+        foreach (var zone in activeHexagonZones)
+        {
+            if (zone != null)
+                Destroy(zone);
+        }
+        activeHexagonZones.Clear();
+        Debug.Log("모든 활성 자기장 제거됨");
+    }
+
+    public int GetActiveZoneCount()
+    {
+        return activeHexagonZones.Count;
     }
 
     public BlueZoneInfo GetCurrentInfo()

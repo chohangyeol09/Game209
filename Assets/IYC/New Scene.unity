@@ -152,11 +152,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nowExp: 0
   isUpgrade: 0
-  movement: {fileID: 1424344150}
+  movement: {fileID: 0}
   attack: {fileID: 572076134}
-  testMesh: {fileID: 155050405}
   upgradePanel: {fileID: 0}
   weapon: {fileID: 0}
+  expBar: {fileID: 0}
+  lvText: {fileID: 0}
+  nowExpText: {fileID: 0}
 --- !u!50 &37788262
 Rigidbody2D:
   serializedVersion: 5
@@ -995,6 +997,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   useHexagonMode: 1
+  useSuperHexagonMode: 1
   mapSize: 100
   targetPosition: {fileID: 2036430231}
   instantKill: 1
@@ -1014,12 +1017,16 @@ MonoBehaviour:
   - 5
   - 5
   - 5
-  hexagonShrinkSpeed: 15
+  hexagonShrinkSpeed: 5
   hexagonInterval: 10
   redSegmentColor: {r: 1, g: 0, b: 0, a: 1}
   destroyParticles: {fileID: 0}
   destroySound: {fileID: 0}
   redSegmentSound: {fileID: 0}
+  hexagonZonePrefab: {fileID: 910667742}
+  superHexagonSpawnInterval: 5
+  respawnAfterDestroy: 1
+  maxActiveZones: 10
   circleSegments: 6
   blueZoneColor: {r: 0, g: 0.05780363, b: 1, a: 0.8}
   safeZoneColor: {r: 1, g: 1, b: 1, a: 0.5}
@@ -1552,9 +1559,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9a5bcfdffdbf3f439afc4931d7fac47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerWeapon: {fileID: 1829748989}
-  rotationDuration: 0.3
-  playerTransform: {fileID: 1424344149}
 --- !u!212 &1829748991
 SpriteRenderer:
   m_ObjectHideFlags: 0
