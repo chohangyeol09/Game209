@@ -1,26 +1,30 @@
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class BlueZone : MonoBehaviour
 {
     [Header("Zone Settings")]
     [SerializeField] private float mapSize = 100f; // 전체 맵 크기
-    [SerializeField] private int totalPhases = 8; // PUBG는 보통 8단계
+    [SerializeField] private int totalPhases = 8; // 변경 가능
     [SerializeField] private Transform targetPosition; // 수축 목표 위치
 
     [Header("Phase Timings (PUBG Style)")]
-    [SerializeField] private float[] phaseDelayTimes = { 30f, 20f, 20f, 15f, 15f, 10f, 10f, 5f }; // 대기 시간 (빠른 테스트용)
-    [SerializeField] private float[] phaseShrinkTimes = { 20f, 15f, 15f, 10f, 10f, 8f, 8f, 5f }; // 수축 시간 (빠른 테스트용)
+    [SerializeField] private float[] phaseDelayTimes = { 0f, 1f, 1f, 1, 1f, 1f, 1f, 1f }; // 대기 시간
+    [SerializeField] private float[] phaseShrinkTimes = { 20f, 15f, 15f, 10f, 10f, 8f, 8f, 5f }; // 수축 시간
 
     [Header("Damage Settings")]
     [SerializeField] private bool instantKill = true; // 즉사 설정
 
     [Header("Visual Settings")]
-    [SerializeField] private int circleSegments = 128; // 원의 세그먼트 수
-    [SerializeField] private Color blueZoneColor = new Color(0f, 0.5f, 1f, 0.8f); // 파란색 자기장
-    [SerializeField] private Color safeZoneColor = new Color(1f, 1f, 1f, 0.5f); // 흰색 안전지대
-    [SerializeField] private float blueZoneThickness = 3f; // 자기장 두께
+    [SerializeField] private int circleSegments = 360;
+    [SerializeField] private Color blueZoneColor = new Color(0f, 0.5f, 1f, 0.8f);
+    [SerializeField] private Color safeZoneColor = new Color(1f, 1f, 1f, 0.5f);
+    [SerializeField] private float blueZoneThickness = 3f;
+
+    [Header("Blue Zone Fill Settings")]
+    [SerializeField] private bool fillBlueZone = true;
+    [SerializeField] private Color blueFillColor = new Color(0f, 0.3f, 0.8f, 0.5f);
 
     [Header("References")]
     [SerializeField] private LayerMask playerLayer;
@@ -29,6 +33,9 @@ public class BlueZone : MonoBehaviour
     private LineRenderer blueZoneOutline;
     private LineRenderer safeZoneOutline;
     private LineRenderer nextSafeZoneOutline;
+    private GameObject blueZoneFill;
+    private MeshFilter blueFillMeshFilter;
+    private MeshRenderer blueFillMeshRenderer;
 
     // 현재 상태
     private Vector2 currentBlueZoneCenter;
@@ -43,6 +50,9 @@ public class BlueZone : MonoBehaviour
     private bool isShrinking = false;
     private float phaseTimer = 0f;
 
+    // 즉사 처리를 위한 리스트
+    private List<GameObject> killedPlayers = new List<GameObject>();
+
     // 이벤트
     public System.Action<int> OnPhaseStart;
     public System.Action<float> OnTimerUpdate;
@@ -52,11 +62,10 @@ public class BlueZone : MonoBehaviour
     {
         // 초기화
         currentBlueZoneCenter = Vector2.zero;
-        currentBlueZoneRadius = mapSize * 2f; // 맵 전체를 덮는 크기
+        currentBlueZoneRadius = mapSize * 2f;
         currentSafeZoneCenter = Vector2.zero;
         currentSafeZoneRadius = mapSize;
 
-        // 타겟 위치가 없으면 (0,0)으로 설정
         if (targetPosition == null)
         {
             Debug.LogWarning("Target Position이 설정되지 않았습니다. (0,0)으로 수축합니다.");
@@ -87,7 +96,28 @@ public class BlueZone : MonoBehaviour
         ConfigureLineRenderer(nextSafeZoneOutline, safeZoneColor * 0.5f, 0.5f, 7);
         nextSafeZoneOutline.enabled = false;
 
+        // 자기장 채우기 설정
+        if (fillBlueZone)
+        {
+            SetupBlueZoneFill();
+        }
+
         UpdateVisuals();
+    }
+
+    void SetupBlueZoneFill()
+    {
+        blueZoneFill = new GameObject("Blue Zone Fill");
+        blueZoneFill.transform.parent = transform;
+        blueZoneFill.transform.position = new Vector3(0, 0, 0.1f);
+
+        blueFillMeshFilter = blueZoneFill.AddComponent<MeshFilter>();
+        blueFillMeshRenderer = blueZoneFill.AddComponent<MeshRenderer>();
+
+        Material fillMaterial = new Material(Shader.Find("Sprites/Default"));
+        fillMaterial.color = blueFillColor;
+        blueFillMeshRenderer.material = fillMaterial;
+        blueFillMeshRenderer.sortingOrder = 5;
     }
 
     void ConfigureLineRenderer(LineRenderer lr, Color color, float width, int order)
@@ -109,7 +139,6 @@ public class BlueZone : MonoBehaviour
             Debug.Log($"=== 페이즈 {currentPhase + 1} 시작 ===");
             OnPhaseStart?.Invoke(currentPhase + 1);
 
-            // 다음 안전지대 계산
             CalculateNextSafeZone();
             ShowNextSafeZone();
 
@@ -134,7 +163,6 @@ public class BlueZone : MonoBehaviour
 
             Debug.Log($"자기장 수축 시작! 수축 시간: {phaseTimer}초");
 
-            // 다음 안전지대 숨기기
             nextSafeZoneOutline.enabled = false;
 
             // 수축 애니메이션
@@ -152,11 +180,9 @@ public class BlueZone : MonoBehaviour
 
                 float t = elapsedTime / shrinkDuration;
 
-                // 안전지대와 자기장 동시 수축
                 currentSafeZoneCenter = Vector2.Lerp(startSafeCenter, nextSafeZoneCenter, t);
                 currentSafeZoneRadius = Mathf.Lerp(startSafeRadius, nextSafeZoneRadius, t);
 
-                // 자기장은 안전지대를 따라감
                 currentBlueZoneCenter = currentSafeZoneCenter;
                 currentBlueZoneRadius = currentSafeZoneRadius;
 
@@ -166,18 +192,16 @@ public class BlueZone : MonoBehaviour
                 yield return null;
             }
 
-            // 수축 완료
             currentSafeZoneCenter = nextSafeZoneCenter;
             currentSafeZoneRadius = nextSafeZoneRadius;
             currentBlueZoneCenter = nextSafeZoneCenter;
             currentBlueZoneRadius = nextSafeZoneRadius;
 
             currentPhase++;
-            killedPlayers.Clear(); // 새 단계에서는 리스트 초기화
+            killedPlayers.Clear();
 
             if (currentPhase >= totalPhases)
             {
-                // 최종 단계: 목표 위치로 완전히 수축
                 Vector2 finalTarget = targetPosition != null ? (Vector2)targetPosition.position : Vector2.zero;
                 currentSafeZoneCenter = finalTarget;
                 currentBlueZoneCenter = finalTarget;
@@ -193,14 +217,11 @@ public class BlueZone : MonoBehaviour
 
     void CalculateNextSafeZone()
     {
-        // PUBG 스타일: 각 단계마다 반경이 줄어듦
         float[] radiusMultipliers = { 0.65f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0f };
         nextSafeZoneRadius = currentSafeZoneRadius * radiusMultipliers[currentPhase];
 
-        // 목표 위치로 점진적 이동
         Vector2 targetPos = targetPosition != null ? (Vector2)targetPosition.position : Vector2.zero;
 
-        // 각 단계마다 목표 위치로 이동하는 비율 (단계가 진행될수록 목표에 가까워짐)
         float moveRatio = (float)(currentPhase + 1) / totalPhases;
         nextSafeZoneCenter = Vector2.Lerp(currentSafeZoneCenter, targetPos, moveRatio);
 
@@ -218,6 +239,74 @@ public class BlueZone : MonoBehaviour
     {
         DrawCircle(blueZoneOutline, currentBlueZoneCenter, currentBlueZoneRadius);
         DrawCircle(safeZoneOutline, currentSafeZoneCenter, currentSafeZoneRadius);
+
+        if (fillBlueZone && blueFillMeshFilter != null)
+        {
+            UpdateBlueZoneFillMesh();
+        }
+    }
+
+    void UpdateBlueZoneFillMesh()
+    {
+        Mesh mesh = CreateDonutMesh(currentBlueZoneCenter, currentBlueZoneRadius,
+                                   currentSafeZoneCenter, currentSafeZoneRadius);
+        blueFillMeshFilter.mesh = mesh;
+    }
+
+    Mesh CreateDonutMesh(Vector2 outerCenter, float outerRadius, Vector2 innerCenter, float innerRadius)
+    {
+        Mesh mesh = new Mesh();
+
+        int segments = circleSegments;
+        int vertexCount = (segments + 1) * 2;
+
+        Vector3[] vertices = new Vector3[vertexCount];
+        Vector2[] uvs = new Vector2[vertexCount];
+        int[] triangles = new int[segments * 6];
+
+        for (int i = 0; i <= segments; i++)
+        {
+            float angle = (float)i / segments * 2f * Mathf.PI;
+            float cos = Mathf.Cos(angle);
+            float sin = Mathf.Sin(angle);
+
+            vertices[i * 2] = new Vector3(
+                outerCenter.x + cos * outerRadius,
+                outerCenter.y + sin * outerRadius,
+                0
+            );
+
+            vertices[i * 2 + 1] = new Vector3(
+                innerCenter.x + cos * innerRadius,
+                innerCenter.y + sin * innerRadius,
+                0
+            );
+
+            uvs[i * 2] = new Vector2((float)i / segments, 1);
+            uvs[i * 2 + 1] = new Vector2((float)i / segments, 0);
+        }
+
+        for (int i = 0; i < segments; i++)
+        {
+            int baseIndex = i * 6;
+            int vertIndex = i * 2;
+
+            triangles[baseIndex] = vertIndex;
+            triangles[baseIndex + 1] = vertIndex + 1;
+            triangles[baseIndex + 2] = vertIndex + 2;
+
+            triangles[baseIndex + 3] = vertIndex + 1;
+            triangles[baseIndex + 4] = vertIndex + 3;
+            triangles[baseIndex + 5] = vertIndex + 2;
+        }
+
+        mesh.vertices = vertices;
+        mesh.uv = uvs;
+        mesh.triangles = triangles;
+        mesh.RecalculateNormals();
+        mesh.RecalculateBounds();
+
+        return mesh;
     }
 
     void DrawCircle(LineRenderer lr, Vector2 center, float radius)
@@ -231,32 +320,26 @@ public class BlueZone : MonoBehaviour
         }
     }
 
-    // 즉사 처리를 위한 리스트
-    private List<GameObject> killedPlayers = new List<GameObject>();
-
     void CheckPlayersInBlueZone()
     {
         Collider2D[] players = Physics2D.OverlapCircleAll(Vector2.zero, mapSize * 3, playerLayer);
 
         foreach (Collider2D player in players)
         {
-            // 이미 죽은 플레이어는 건너뛰기
             if (killedPlayers.Contains(player.gameObject))
                 continue;
 
             Vector2 playerPos = player.transform.position;
             float distanceFromCenter = Vector2.Distance(playerPos, currentBlueZoneCenter);
 
-            // 플레이어가 자기장 밖에 있는지 확인 (안전지대 밖)
             if (distanceFromCenter > currentBlueZoneRadius)
             {
-                PlayerHealth health = player.GetComponent<PlayerHealth>();
-                if (health != null)
+                Iyc_PlayerController playerController = player.GetComponent<Iyc_PlayerController>();
+                if (playerController != null)
                 {
                     if (instantKill)
                     {
-                        // 즉사 처리
-                        health.InstantKill();
+                        playerController.InstantKill();
                         killedPlayers.Add(player.gameObject);
                         Debug.Log($"{player.name}이(가) 자기장에 닿아 즉사했습니다!");
                     }
@@ -274,7 +357,7 @@ public class BlueZone : MonoBehaviour
     public float GetDistanceFromBlueZone(Vector2 position)
     {
         float distance = Vector2.Distance(position, currentBlueZoneCenter);
-        return currentBlueZoneRadius - distance; // 양수면 안전, 음수면 자기장 밖
+        return currentBlueZoneRadius - distance;
     }
 
     public BlueZoneInfo GetCurrentInfo()

@@ -1,13 +1,13 @@
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class BlueZoneUI : MonoBehaviour
 {
     [Header("Zone Info")]
-    [SerializeField] private TextMeshPro phaseText;
-    [SerializeField] private TextMeshPro timerText;
-    [SerializeField] private TextMeshPro zoneStatusText;
+    [SerializeField] private Text phaseText;
+    [SerializeField] private Text timerText;
+    [SerializeField] private Text zoneStatusText;
 
     [Header("Minimap")]
     [SerializeField] private RectTransform minimapContainer;
@@ -19,13 +19,13 @@ public class BlueZoneUI : MonoBehaviour
 
     [Header("Health")]
     [SerializeField] private Slider healthBar;
-    [SerializeField] private TextMeshPro healthText;
-    [SerializeField] private Image damageIndicator; // 빨간색 화면 효과
+    [SerializeField] private Text healthText;
+    [SerializeField] private Image damageIndicator;
 
     [Header("References")]
     [SerializeField] private BlueZone blueZone;
     [SerializeField] private Transform player;
-    [SerializeField] private PlayerHealth playerHealth;
+    [SerializeField] private Iyc_PlayerController playerController;
 
     void Start()
     {
@@ -36,10 +36,10 @@ public class BlueZoneUI : MonoBehaviour
             blueZone.OnNextZoneRevealed += ShowNextZoneOnMinimap;
         }
 
-        if (playerHealth != null)
+        if (playerController != null)
         {
-            playerHealth.OnHealthChanged += UpdateHealth;
-            playerHealth.OnBlueZoneStatusChanged += UpdateBlueZoneStatus;
+            playerController.OnHealthChanged += UpdateHealth;
+            playerController.OnBlueZoneStatusChanged += UpdateBlueZoneStatus;
         }
     }
 
@@ -53,23 +53,27 @@ public class BlueZoneUI : MonoBehaviour
 
     void UpdatePhase(int phase)
     {
-        phaseText.text = $"페이즈 {phase}";
+        if (phaseText != null)
+            phaseText.text = $"페이즈 {phase}";
     }
 
     void UpdateTimer(float time)
     {
-        int minutes = Mathf.FloorToInt(time / 60);
-        int seconds = Mathf.FloorToInt(time % 60);
-        timerText.text = $"{minutes:00}:{seconds:00}";
+        if (timerText != null)
+        {
+            int minutes = Mathf.FloorToInt(time / 60);
+            int seconds = Mathf.FloorToInt(time % 60);
+            timerText.text = $"{minutes:00}:{seconds:00}";
 
-        BlueZoneInfo info = blueZone.GetCurrentInfo();
-        if (info.isWaiting)
-        {
-            timerText.color = Color.white;
-        }
-        else if (info.isShrinking)
-        {
-            timerText.color = Color.red;
+            BlueZoneInfo info = blueZone.GetCurrentInfo();
+            if (info.isWaiting)
+            {
+                timerText.color = Color.white;
+            }
+            else if (info.isShrinking)
+            {
+                timerText.color = Color.red;
+            }
         }
     }
 
@@ -77,26 +81,28 @@ public class BlueZoneUI : MonoBehaviour
     {
         bool inSafeZone = blueZone.IsInSafeZone(player.position);
 
-        if (inSafeZone)
+        if (zoneStatusText != null)
         {
-            zoneStatusText.text = "안전지대 내";
-            zoneStatusText.color = Color.white;
-        }
-        else
-        {
-            float distance = blueZone.GetDistanceFromBlueZone(player.position);
-            zoneStatusText.text = $"자기장까지: {Mathf.Abs(distance):F1}m";
-            zoneStatusText.color = Color.red;
+            if (inSafeZone)
+            {
+                zoneStatusText.text = "안전지대 내";
+                zoneStatusText.color = Color.white;
+            }
+            else
+            {
+                float distance = blueZone.GetDistanceFromBlueZone(player.position);
+                zoneStatusText.text = $"자기장까지: {Mathf.Abs(distance):F1}m";
+                zoneStatusText.color = Color.red;
+            }
         }
 
-        playerHealth.SetBlueZoneStatus(!inSafeZone);
+        playerController.SetBlueZoneStatus(!inSafeZone);
     }
 
     void UpdateMinimap()
     {
         BlueZoneInfo info = blueZone.GetCurrentInfo();
 
-        // 자기장 업데이트
         if (minimapBlueZone != null)
         {
             minimapBlueZone.rectTransform.anchoredPosition = info.blueZoneCenter * minimapScale;
@@ -104,7 +110,6 @@ public class BlueZoneUI : MonoBehaviour
             minimapBlueZone.rectTransform.sizeDelta = new Vector2(size, size);
         }
 
-        // 현재 안전지대
         if (minimapSafeZone != null)
         {
             minimapSafeZone.rectTransform.anchoredPosition = info.safeZoneCenter * minimapScale;
@@ -112,7 +117,6 @@ public class BlueZoneUI : MonoBehaviour
             minimapSafeZone.rectTransform.sizeDelta = new Vector2(size, size);
         }
 
-        // 플레이어 위치
         if (minimapPlayer != null)
         {
             minimapPlayer.anchoredPosition = (Vector2)player.position * minimapScale;
@@ -149,7 +153,6 @@ public class BlueZoneUI : MonoBehaviour
         {
             if (inBlueZone)
             {
-                // 자기장 안에 있을 때 강한 빨간색 경고
                 damageIndicator.color = new Color(1, 0, 0, 0.5f);
                 Debug.LogWarning("경고! 자기장에 닿으면 즉사합니다!");
             }
@@ -159,5 +162,4 @@ public class BlueZoneUI : MonoBehaviour
             }
         }
     }
-
 }

@@ -13,9 +13,9 @@ public class CWH_RotateObstacleParent : MonoBehaviour
         transform.Rotate(0, 0, deltaRotation);
         accumulatedRotation += deltaRotation;
 
-        if (accumulatedRotation >= 60f)
+        if (accumulatedRotation >=360f)
         {
-            accumulatedRotation -= 60f;
+            accumulatedRotation -= 360f;
 
             // 도형의 -1개 만큼 장애물 생성
             spawner.SpawnPattern();
