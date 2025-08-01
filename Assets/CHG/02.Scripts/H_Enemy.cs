@@ -9,7 +9,7 @@ public class H_Enemy : MonoBehaviour
     private SpriteRenderer _spriteRen;
     private Color _color;
 
-
+    private GameObject _boss;
     private GameObject _target;
     private bool _isLive;
 
@@ -31,7 +31,6 @@ public class H_Enemy : MonoBehaviour
     private void FixedUpdate()
     {
         if (!_isLive) return;
-        Debug.Log(1);
         switch (Data.Id)
         {
             case 1:
@@ -43,7 +42,9 @@ public class H_Enemy : MonoBehaviour
             case 4:
             case 5:
                 _rb2.linearVelocity = _oneDir * _speed * Time.fixedDeltaTime;
-                Debug.Log(2);
+                break;
+            case 6:
+                _rb2.linearVelocity = transform.parent.forward * _speed * Time.deltaTime;
                 break;
 
 
@@ -55,7 +56,6 @@ public class H_Enemy : MonoBehaviour
         _target = GameObject.FindWithTag("Player");
         _playerScript = _target.GetComponent<Ku_PlayerMovement>();
 
-
         gameObject.name = Data.Name;
         _spriteRen.sprite = Data.Sprite;
         _speed = Data.Speed;
@@ -65,9 +65,9 @@ public class H_Enemy : MonoBehaviour
         _damage = Data.Damage;
         _color = Data.color;
         _spriteRen.color = Data.color;
-        if (Data.Id == 3 || Data.Id == 4)
-            _oneDir = _target.transform.position - transform.position;
 
+        if (Data.Id == 3 || Data.Id == 4 || Data.Id == 5)
+            _oneDir = _target.transform.position - transform.position;
 
         _isLive = true;
     }
@@ -76,8 +76,9 @@ public class H_Enemy : MonoBehaviour
     private void Dead()
     {
         H_AudioManager.Instance.SfxPlay(H_AudioManager.Sfx.EnemyDead);
-        if (Data.Id != 4 || Data.Id != 5)
+        if (Data.Id != 4 && Data.Id != 5)
         {
+            Debug.Log(Data.Id);
             GameObject expbead = H_PoolManager.Instance.ExpPop();
             expbead.transform.position = transform.position;
             expbead.GetComponent<H_Expbead>().Exp = Data.Exp;
