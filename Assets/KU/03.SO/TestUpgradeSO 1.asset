@@ -16,3 +16,4 @@ MonoBehaviour:
   name: StrongPower
   coment: "\uC870\uAE08 \uB354 \uAC15\uD558\uAC8C \uACF5\uACA9\uD558\uC138\uC694!"
   cardNum: 1
+  upgradeType: 1

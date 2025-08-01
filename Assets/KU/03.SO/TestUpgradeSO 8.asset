@@ -16,3 +16,4 @@ MonoBehaviour:
   name: FastAttack
   coment: "\uB354 \uBE60\uB974\uAC8C \uACF5\uACA9\uD558\uC138\uC694!"
   cardNum: 8
+  upgradeType: 8

@@ -16,3 +16,4 @@ MonoBehaviour:
   name: Max Health
   coment: "\uB354 \uB9CE\uC740 \uCD5C\uB300 \uCCB4\uB825\uC744 \uC5BB\uC73C\uC138\uC694!"
   cardNum: 5
+  upgradeType: 5
