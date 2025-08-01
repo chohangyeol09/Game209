@@ -20,6 +20,10 @@ public class Ku_UpgradeCard : MonoBehaviour
 
     public void ChooseButton()
     {
+        if (upgradeCardSO.name == "Blood")
+        {
+            GameObject.Find("UpgradePanel").GetComponent<Ku_UpgradePanel>().SpecialUpgrade(9);
+        }
         GameObject.Find("expManager").GetComponent<Ku_PlayerUpgradeManager>().OnUpgradeComplete(upgradeCardSO.upgradeType);
     }
 }

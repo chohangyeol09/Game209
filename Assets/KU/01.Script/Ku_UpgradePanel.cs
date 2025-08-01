@@ -58,4 +58,9 @@ public class Ku_UpgradePanel : MonoBehaviour
             }
         }
     }
+
+    public void SpecialUpgrade(int num)
+    {
+        upgradeCardSOList.RemoveAt(num);
+    }
 }
