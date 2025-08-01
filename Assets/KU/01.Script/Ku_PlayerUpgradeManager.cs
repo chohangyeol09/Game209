@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,7 +23,6 @@ public class Ku_PlayerUpgradeManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI lvText;
     [SerializeField] private TextMeshProUGUI nowExpText;
 
-
     private float targetScale = 3;
 
     private void Awake()
@@ -37,7 +37,7 @@ public class Ku_PlayerUpgradeManager : MonoBehaviour
 
     private void Update()
     {
-        expBar.size = nowExp/limitExp;
+        expBar.size = nowExp / limitExp;
         lvText.text = $"Lv: {level}";
         nowExpText.text = $"{(int)(nowExp * 100 / limitExp)}%";
 
@@ -68,7 +68,38 @@ public class Ku_PlayerUpgradeManager : MonoBehaviour
         }
     }
 
-    public void OnUpgradeComplete(int num)
+    public Dictionary<UpgradeType, int> _upgradeType = new Dictionary<UpgradeType, int>() // 자원 저장
+    {
+        {UpgradeType.Band, 0},
+        {UpgradeType.Blood, 0},
+        {UpgradeType.DemonPlane, 0},
+        {UpgradeType.DoubleSwords, 0},
+        {UpgradeType.FastAttack, 0},
+        {UpgradeType.FastMove,0},
+        {UpgradeType.LongSword,0},
+        {UpgradeType.Magnetic,0},
+        {UpgradeType.MaxHealth,0},
+        {UpgradeType.PushPower,0},
+        {UpgradeType.StrongPower,0},
+        {UpgradeType.Viking,0}
+    };  //_upgradeType[UpgradeType.(타입)] 으로 사용
+    public Dictionary<UpgradeType, int> _maxupgrade = new Dictionary<UpgradeType, int>() // 자원 저장
+    {
+        {UpgradeType.Band, 0},
+        {UpgradeType.Blood, 0},
+        {UpgradeType.DemonPlane, 0},
+        {UpgradeType.DoubleSwords, 0},
+        {UpgradeType.FastAttack, 0},
+        {UpgradeType.FastMove,0},
+        {UpgradeType.LongSword,1},
+        {UpgradeType.Magnetic,1},
+        {UpgradeType.MaxHealth,1},
+        {UpgradeType.PushPower,1},
+        {UpgradeType.StrongPower,1},
+        {UpgradeType.Viking,1}
+    };  //업그레이드 한번만 가능한건 0으로 표시
+
+    public void OnUpgradeComplete(UpgradeType type)
     {
         isUpgrade = false;
         upgradePanel.SetActive(false);
@@ -91,42 +122,56 @@ public class Ku_PlayerUpgradeManager : MonoBehaviour
                 otherExp = 0;
             }
         }
-        switch (num)
+        switch (type)
         {
-            case 0:
+            case UpgradeType.FastMove:
                 movement.speed += 0.5f;
+                _upgradeType[UpgradeType.FastMove]++;
                 return;
-            case 1:
+            case UpgradeType.StrongPower:
                 attack.damage += 4;
+                _upgradeType[UpgradeType.StrongPower]++;
                 return;
-            case 2:
+            case UpgradeType.DemonPlane:
                 movement.LowHealthPlayer(movement.maxHp / 2);
                 attack.damage += 5;
+                _upgradeType[UpgradeType.DemonPlane]++;
                 return;
-            case 3:
+            case UpgradeType.Band:
                 movement.HealPlayer(movement.maxHp / 5);
+                _upgradeType[UpgradeType.Band]++;
                 return;
-            case 4:
+            case UpgradeType.DoubleSwords:
                 attack.damage += 6;
+                _upgradeType[UpgradeType.DoubleSwords]++;
                 return;
-            case 5:
+            case UpgradeType.MaxHealth:
                 movement.MaxHPPlayer(40);
+                _upgradeType[UpgradeType.MaxHealth]++;
                 return;
-            case 6:
+            case UpgradeType.Viking:
                 movement.MaxHPPlayer(20);
                 attack.damage += 2;
+                _upgradeType[UpgradeType.Viking]++;
                 return;
-            case 7:
+            case UpgradeType.Magnetic:
                 targetScale++;
                 return;
-            case 8:
+            case UpgradeType.FastAttack:
                 movement.cooldown -= 0.2f;
+                _upgradeType[UpgradeType.FastAttack]++;
                 return;
-            case 9://아직 수정중
+            case UpgradeType.Blood://아직 수정중
+
+                _upgradeType[UpgradeType.Blood]++;
                 return;
-            case 10: attack.pushDistance += 0.25f;
+            case UpgradeType.PushPower:
+                attack.pushDistance += 0.25f;
+                _upgradeType[UpgradeType.PushPower]++;
                 return;
-            case 11: weapon.transform.localScale = new Vector3(1, weapon.transform.localScale.y + 0.25f, 1);
+            case UpgradeType.LongSword:
+                weapon.transform.localScale = new Vector3(1, weapon.transform.localScale.y + 0.25f, 1);
+                _upgradeType[UpgradeType.LongSword]++;
                 return;
             default: return;
         }
