@@ -122,9 +122,15 @@ public class H_Enemy : MonoBehaviour
 
             _playerScript.AttackPlayer(_damage);
             _canAttack = false;
-            if (!_isLive) return;
             StartCoroutine(CanAttack());
+        }
 
+        if (collision.gameObject.layer == 6)
+        {
+            if (Data.Id == 4 || Data.Id == 5 || Data.Id == 6)
+            {
+                _canMove = false;
+            }
         }
     }
 

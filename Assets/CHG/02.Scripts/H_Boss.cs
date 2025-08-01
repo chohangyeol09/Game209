@@ -18,7 +18,7 @@ public class H_Boss : MonoBehaviour
     [SerializeField] private GameObject FirePos;
     [SerializeField] private GameObject DangerZonePrefab;
 
-    private int Health = 400;
+    private int Health = 200;
     private float _coolTime = 5;
     private float _curTime = 0;
     private SpriteRenderer _spriteRen;
