@@ -7,24 +7,33 @@ public class Ku_UpgradePanel : MonoBehaviour
     [SerializeField] private List<Ku_UpgradeCardSO> upgradeCardSOList = new List<Ku_UpgradeCardSO>();
 
     private List<GameObject> cardList = new List<GameObject>();
-
+    private int _count = 0;
     private void OnEnable()
     {
+        _count = 0;
+
         if (cardList != null)
         {
             cardList.Clear();
         }
 
-        for (int i = 0; i < 3; i++)
+        while (_count <= 3)
         {
-            Vector3 position = new Vector3(400 + (-580 + 580 * (i + 1)), 500, 0);
+            Vector3 position = new Vector3(400 + (-580 + 580 * (_count + 1)), 500, 0);
             GameObject clone = Instantiate(upgradeCard, position, Quaternion.identity, transform);
 
             Ku_UpgradeCardSO randomSO = upgradeCardSOList[Random.Range(0, upgradeCardSOList.Count)];
-            clone.GetComponent<Ku_UpgradeCard>().upgradeCardSO = randomSO;
+            if (!(Ku_PlayerUpgradeManager.Instance._upgradeType[randomSO.upgradeType] >=
+                Ku_PlayerUpgradeManager.Instance._maxupgrade[randomSO.upgradeType]))
+            {
+                clone.GetComponent<Ku_UpgradeCard>().upgradeCardSO = randomSO;
 
-            cardList.Add(clone);
+                cardList.Add(clone);
+                _count++;
+            }
         }
+
+        
     }
 
     private void Update()
@@ -44,6 +53,7 @@ public class Ku_UpgradePanel : MonoBehaviour
 
             if (allNull)
             {
+                Debug.Log("false");
                 gameObject.SetActive(false);
             }
         }
