@@ -9,7 +9,6 @@ public class H_Enemy : MonoBehaviour
     private SpriteRenderer _spriteRen;
     private Color _color;
 
-    private GameObject _boss;
     private GameObject _target;
     private bool _isLive;
 
@@ -18,6 +17,10 @@ public class H_Enemy : MonoBehaviour
     private int _maxHealth;
     private float _speed;
     private int _damage;
+
+    private GameObject _boss;
+    private Vector3 _bossvec;
+
     private Vector2 _oneDir;
     private Vector2 dirVec;
     private void Awake()
@@ -26,12 +29,13 @@ public class H_Enemy : MonoBehaviour
         _spriteRen = GetComponent<SpriteRenderer>();
         _target = GameObject.FindWithTag("Player");
         _playerScript = _target.GetComponent<Ku_PlayerMovement>();
-        _boss = GameObject.FindWithTag("Enemy");
+        
+        _boss = GameObject.FindWithTag("Boss");
+        _bossvec = _boss.transform.up;
     }
 
     private void FixedUpdate()
     {
-        Debug.Log(1);
         if (!_isLive) return;
         switch (Data.Id)
         {
@@ -46,8 +50,7 @@ public class H_Enemy : MonoBehaviour
                 _rb2.linearVelocity = _oneDir * _speed * Time.fixedDeltaTime;
                 break;
             case 6:
-                Debug.Log(_boss.transform.up);
-                _rb2.linearVelocity = _boss.transform.up * _speed * Time.deltaTime;
+                _rb2.linearVelocity = _bossvec * _speed * Time.deltaTime;
                 break;
 
 

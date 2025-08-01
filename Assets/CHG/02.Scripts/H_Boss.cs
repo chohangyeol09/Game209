@@ -37,9 +37,9 @@ public class H_Boss : MonoBehaviour
     {
         AttackPetton = new Action[]
         {
-            /*LongAttack,
+            LongAttack,
             DangerZone,
-            Cannon,*/
+            Cannon,
             Spin
         };
     }
@@ -79,7 +79,7 @@ public class H_Boss : MonoBehaviour
 
         for (int i = 0; i < loop; i++)
         {
-            FireCanon.transform.DOPunchPosition(new Vector3(0f, 0.02f, 0), 0.1f);
+            FireCanon.transform.DOPunchPosition(new Vector3(0f, 0.1f, 0), 0.1f);
 
             if (s == "Long")
             {
@@ -142,7 +142,6 @@ public class H_Boss : MonoBehaviour
         // ÇÑ ¹ÙÄû È¸Àü
         transform.DORotate(new Vector3(0, 0, endZ), 1f, RotateMode.FastBeyond360).OnComplete(() =>
         {
-            endZ = startZ - 360f;
             transform.DORotate(new Vector3(0, 0, endZ), 1f, RotateMode.FastBeyond360).OnComplete(() =>
             {
                 Vector3 dir = _target.transform.position - transform.position;
