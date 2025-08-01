@@ -160,11 +160,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nowExp: 0
   isUpgrade: 0
-  movement: {fileID: 0}
+  movement: {fileID: 2210546963192681874}
   attack: {fileID: 1391366033979065906}
   testMesh: {fileID: 0}
   upgradePanel: {fileID: 0}
   weapon: {fileID: 313392904280755015}
+  expBar: {fileID: 0}
+  lvText: {fileID: 0}
+  nowExpText: {fileID: 0}
 --- !u!1 &1334146726813017872
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CWH_ButtonScaleAndRotate : MonoBehaviour,IPointerEnterHandler, IPointerExitHandler
+public class CWH_ButtonScaleAndRotate : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public Vector3 targetScale = new Vector3(1.1f, 1.1f, 1f); // 확대 크기
     public float scaleSpeed = 5f;
@@ -24,7 +24,7 @@ public class CWH_ButtonScaleAndRotate : MonoBehaviour,IPointerEnterHandler, IPoi
     {
         if (isHovering)
         {
-            transform.Rotate(Vector3.forward * rotateSpeed * Time.deltaTime);
+            transform.Rotate(Vector3.forward * rotateSpeed * Time.unscaledDeltaTime);
         }
     }
 
@@ -32,7 +32,6 @@ public class CWH_ButtonScaleAndRotate : MonoBehaviour,IPointerEnterHandler, IPoi
     {
         isHovering = true;
 
-        // 중복 코루틴 방지
         if (rotateResetRoutine != null)
         {
             StopCoroutine(rotateResetRoutine);
@@ -47,7 +46,6 @@ public class CWH_ButtonScaleAndRotate : MonoBehaviour,IPointerEnterHandler, IPoi
         isHovering = false;
         StartScaling(originalScale);
 
-        // 회전 복원 시작
         rotateResetRoutine = StartCoroutine(RotateToOriginal());
     }
 
@@ -63,7 +61,7 @@ public class CWH_ButtonScaleAndRotate : MonoBehaviour,IPointerEnterHandler, IPoi
     {
         while (Vector3.Distance(transform.localScale, target) > 0.01f)
         {
-            transform.localScale = Vector3.Lerp(transform.localScale, target, Time.deltaTime * scaleSpeed);
+            transform.localScale = Vector3.Lerp(transform.localScale, target, Time.unscaledDeltaTime * scaleSpeed);
             yield return null;
         }
 
@@ -75,15 +73,29 @@ public class CWH_ButtonScaleAndRotate : MonoBehaviour,IPointerEnterHandler, IPoi
     {
         Quaternion startRot = transform.rotation;
         float t = 0f;
+        float duration = 1f / rotationResetSpeed;
 
-        while (Quaternion.Angle(transform.rotation, originalRotation) > 0.1f)
+        while (t < 1f)
         {
+            t += Time.unscaledDeltaTime / duration;
             transform.rotation = Quaternion.Lerp(startRot, originalRotation, t);
-            t += Time.deltaTime * rotationResetSpeed;
             yield return null;
         }
 
         transform.rotation = originalRotation;
+        rotateResetRoutine = null;
+    }
+
+    void OnDisable()
+    {
+        isHovering = false;
+        transform.localScale = originalScale;
+        transform.rotation = originalRotation;
+
+        if (scaleRoutine != null) StopCoroutine(scaleRoutine);
+        if (rotateResetRoutine != null) StopCoroutine(rotateResetRoutine);
+
+        scaleRoutine = null;
         rotateResetRoutine = null;
     }
 }
