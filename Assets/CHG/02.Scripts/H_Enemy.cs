@@ -158,9 +158,14 @@ public class H_Enemy : MonoBehaviour
             if (Data.Id == 4 || Data.Id == 5 || Data.Id == 6)
             {
                 _canMove = false;
-                Debug.Log(_canMove);
             }
         }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        Rigidbody2D rb = collision.gameObject.GetComponent<Rigidbody2D>();
+        rb.linearVelocity = Vector2.zero;
     }
 
     //¼öÁ¤
