@@ -13,6 +13,7 @@ public class BlueZone : MonoBehaviour
     [SerializeField] private Transform targetPosition;
     [SerializeField] private bool instantKill = true;
     [SerializeField] private LayerMask playerLayer;
+    [SerializeField] private LayerMask enemyLayer;
 
     [Header("Circle Mode Settings (PUBG Style)")]
     [SerializeField] private int totalPhases = 8;
@@ -26,6 +27,15 @@ public class BlueZone : MonoBehaviour
     [SerializeField] private ParticleSystem destroyParticles;
     [SerializeField] private AudioClip destroySound;
     [SerializeField] private AudioClip redSegmentSound;
+
+    [Header("Hexagon Rotation Settings")]
+    [SerializeField] private bool enableRotation = true;
+    [SerializeField] private float baseRotationSpeed = 30f; // 기본 회전 속도 (도/초)
+    [SerializeField] private float maxRotationSpeed = 180f; // 최대 회전 속도
+    [SerializeField] private float rotationAcceleration = 10f; // 회전 가속도
+    [SerializeField] private float directionChangeInterval = 3f; // 회전 방향 변경 간격
+    [SerializeField] private bool randomRotationDirection = true; // 랜덤 방향 변경
+    [SerializeField] private AnimationCurve rotationSpeedCurve = AnimationCurve.EaseInOut(0, 0, 1, 1); // 회전 속도 커브
 
     [Header("Super Hexagon Mode Settings")]
     [SerializeField] private GameObject hexagonZonePrefab;
@@ -71,6 +81,14 @@ public class BlueZone : MonoBehaviour
     private Vector2[] hexagonVertices;
     private Vector2 currentCenter;
     private float currentRadius;
+
+    // 회전 관련 변수들
+    private float currentRotationAngle = 0f;
+    private float currentRotationSpeed = 0f;
+    private float rotationDirection = 1f; // 1 = 시계방향, -1 = 반시계방향
+    private float lastDirectionChangeTime = 0f;
+    private float hexagonShrinkStartTime = 0f;
+    private float totalShrinkDuration = 0f;
 
     // Super Hexagon 모드 변수
     private List<GameObject> activeHexagonZones = new List<GameObject>();
@@ -209,6 +227,7 @@ public class BlueZone : MonoBehaviour
 
                 UpdateCircleVisuals();
                 CheckPlayersInCircleZone();
+                CheckEnemysInCircleZone();
 
                 yield return null;
             }
@@ -283,12 +302,37 @@ public class BlueZone : MonoBehaviour
 
             if (distanceFromCenter > currentBlueZoneRadius)
             {
-                Iyc_PlayerController playerController = player.GetComponent<Iyc_PlayerController>();
+                PlayerHealth playerController = player.GetComponent<PlayerHealth>();
                 if (playerController != null && instantKill)
                 {
                     playerController.InstantKill();
                     killedPlayers.Add(player.gameObject);
                     Debug.Log($"{player.name}이(가) 자기장에 닿아 즉사했습니다!");
+                }
+            }
+        }
+    }
+
+    void CheckEnemysInCircleZone()
+    {
+        Collider2D[] enemys = Physics2D.OverlapCircleAll(Vector2.zero, mapSize * 3, enemyLayer);
+
+        foreach (Collider2D enemy in enemys)
+        {
+            if (killedPlayers.Contains(enemy.gameObject))
+                continue;
+
+            Vector2 playerPos = enemy.transform.position;
+            float distanceFromCenter = Vector2.Distance(playerPos, currentBlueZoneCenter);
+
+            if (distanceFromCenter > currentBlueZoneRadius)
+            {
+                PlayerHealth playerController = enemy.GetComponent<PlayerHealth>();
+                if (playerController != null && instantKill)
+                {
+                    playerController.InstantKill();
+                    killedPlayers.Add(enemy.gameObject);
+                    Debug.Log($"{enemy.name}이(가) 자기장에 닿아 즉사했습니다!");
                 }
             }
         }
@@ -394,6 +438,7 @@ public class BlueZone : MonoBehaviour
             zoneScript.targetPosition = targetPosition;
             zoneScript.instantKill = instantKill;
             zoneScript.playerLayer = playerLayer;
+            zoneScript.enemyLayer = enemyLayer;
             zoneScript.hexagonShrinkSpeed = hexagonShrinkSpeed;
             zoneScript.redSegmentColor = redSegmentColor;
             zoneScript.destroyParticles = destroyParticles;
@@ -402,6 +447,15 @@ public class BlueZone : MonoBehaviour
             zoneScript.zoneThickness = zoneThickness;
             zoneScript.fillZone = fillZone;
             zoneScript.fillColor = fillColor;
+
+            // 회전 설정 복사
+            zoneScript.enableRotation = enableRotation;
+            zoneScript.baseRotationSpeed = baseRotationSpeed;
+            zoneScript.maxRotationSpeed = maxRotationSpeed;
+            zoneScript.rotationAcceleration = rotationAcceleration;
+            zoneScript.directionChangeInterval = directionChangeInterval;
+            zoneScript.randomRotationDirection = randomRotationDirection;
+            zoneScript.rotationSpeedCurve = rotationSpeedCurve;
 
             zoneScript.OnZoneDestroyed += () => OnHexagonDestroyed(newZone);
         }
@@ -536,14 +590,43 @@ public class BlueZone : MonoBehaviour
         Vector2 targetPos = targetPosition != null ? (Vector2)targetPosition.position : Vector2.zero;
         float targetRadius = 0f;
 
+        // 회전 초기화
+        if (enableRotation)
+        {
+            currentRotationSpeed = baseRotationSpeed;
+            hexagonShrinkStartTime = Time.time;
+            lastDirectionChangeTime = Time.time;
+
+            // 랜덤 초기 방향 설정
+            if (randomRotationDirection)
+            {
+                rotationDirection = Random.Range(0, 2) == 0 ? 1f : -1f;
+            }
+
+            // 총 수축 시간 계산
+            totalShrinkDuration = currentRadius / hexagonShrinkSpeed;
+
+            Debug.Log($"헥사곤 회전 시작! 초기속도: {currentRotationSpeed}, 방향: {(rotationDirection > 0 ? "시계방향" : "반시계방향")}");
+        }
+
         while (currentRadius > targetRadius && !zoneDestroyed)
         {
-            currentRadius = Mathf.MoveTowards(currentRadius, targetRadius, hexagonShrinkSpeed * Time.deltaTime);
-            currentCenter = Vector2.MoveTowards(currentCenter, targetPos, hexagonShrinkSpeed * Time.deltaTime * 0.5f);
+            float deltaTime = Time.deltaTime;
+
+            // 회전 로직
+            if (enableRotation)
+            {
+                UpdateHexagonRotation(deltaTime);
+            }
+
+            // 기존 수축 로직
+            currentRadius = Mathf.MoveTowards(currentRadius, targetRadius, hexagonShrinkSpeed * deltaTime);
+            currentCenter = Vector2.MoveTowards(currentCenter, targetPos, hexagonShrinkSpeed * deltaTime * 0.5f);
 
             CheckAndUpdateRedSegment();
             UpdateHexagon();
             CheckPlayersInHexagon();
+            CheckEnemysInHexagon();
 
             yield return null;
         }
@@ -552,6 +635,56 @@ public class BlueZone : MonoBehaviour
         {
             yield return StartCoroutine(DestroyZoneEffect());
         }
+    }
+
+    // 헥사곤 회전 업데이트
+    void UpdateHexagonRotation(float deltaTime)
+    {
+        // 수축 진행도 계산 (0~1)
+        float shrinkProgress = totalShrinkDuration > 0 ?
+            (Time.time - hexagonShrinkStartTime) / totalShrinkDuration : 0f;
+        shrinkProgress = Mathf.Clamp01(shrinkProgress);
+
+        // 회전 속도 업데이트 (시간에 따라 가속)
+        float speedMultiplier = rotationSpeedCurve.Evaluate(shrinkProgress);
+        float targetSpeed = Mathf.Lerp(baseRotationSpeed, maxRotationSpeed, speedMultiplier);
+
+        currentRotationSpeed = Mathf.MoveTowards(currentRotationSpeed, targetSpeed,
+            rotationAcceleration * deltaTime);
+
+        // 회전 방향 변경
+        if (randomRotationDirection && Time.time - lastDirectionChangeTime >= directionChangeInterval)
+        {
+            // 30% 확률로 방향 변경
+            if (Random.Range(0f, 1f) < 0.3f)
+            {
+                rotationDirection *= -1f;
+                lastDirectionChangeTime = Time.time;
+
+                Debug.Log($"회전 방향 변경! 새 방향: {(rotationDirection > 0 ? "시계방향" : "반시계방향")}");
+
+                // 방향 변경 시 사운드 재생 (선택사항)
+                if (audioSource != null && redSegmentSound != null)
+                {
+                    audioSource.pitch = Random.Range(0.8f, 1.2f); // 피치 변경으로 다양성 추가
+                    audioSource.PlayOneShot(redSegmentSound);
+                    audioSource.pitch = 1f; // 피치 원복
+                }
+            }
+            else
+            {
+                lastDirectionChangeTime = Time.time;
+            }
+        }
+
+        // 회전 각도 업데이트
+        currentRotationAngle += currentRotationSpeed * rotationDirection * deltaTime;
+
+        // 각도를 0~360 범위로 정규화
+        if (currentRotationAngle >= 360f)
+            currentRotationAngle -= 360f;
+        else if (currentRotationAngle < 0f)
+            currentRotationAngle += 360f;
     }
 
     void CheckAndUpdateRedSegment()
@@ -606,7 +739,8 @@ public class BlueZone : MonoBehaviour
 
         for (int i = 0; i < 6; i++)
         {
-            float angle = (60f * i - 30f) * Mathf.Deg2Rad;
+            // 기본 헥사곤 각도에 회전 각도 추가
+            float angle = (60f * i - 30f + currentRotationAngle) * Mathf.Deg2Rad;
             vertices[i] = center + new Vector2(
                 Mathf.Cos(angle) * radius,
                 Mathf.Sin(angle) * radius
@@ -670,12 +804,38 @@ public class BlueZone : MonoBehaviour
                     return;
                 }
 
-                Iyc_PlayerController playerController = player.GetComponent<Iyc_PlayerController>();
+                PlayerHealth playerController = player.GetComponent<PlayerHealth>();
                 if (playerController != null && instantKill)
                 {
                     playerController.InstantKill();
                     killedPlayers.Add(player.gameObject);
                     Debug.Log($"{player.name}이(가) 자기장에 닿아 즉사했습니다!");
+                }
+            }
+        }
+    }
+
+    void CheckEnemysInHexagon()
+    {
+        if (zoneDestroyed) return;
+
+        Collider2D[] enemys = Physics2D.OverlapCircleAll(currentCenter, mapSize * 2, enemyLayer);
+
+        foreach (Collider2D enemy in enemys)
+        {
+            if (killedPlayers.Contains(enemy.gameObject))
+                continue;
+
+            Vector2 playerPos = enemy.transform.position;
+
+            if (!IsPointInHexagon(playerPos))
+            {
+                PlayerHealth playerController = enemy.GetComponent<PlayerHealth>();
+                if (playerController != null && instantKill)
+                {
+                    playerController.InstantKill();
+                    killedPlayers.Add(enemy.gameObject);
+                    Debug.Log($"{enemy.name}이(가) 자기장에 닿아 즉사했습니다!");
                 }
             }
         }
@@ -785,6 +945,20 @@ public class BlueZone : MonoBehaviour
         currentCenter = transform.position;
         killedPlayers.Clear();
         zoneDestroyed = false;
+
+        // 회전 상태 리셋
+        if (enableRotation)
+        {
+            currentRotationAngle = 0f;
+            currentRotationSpeed = baseRotationSpeed;
+
+            if (randomRotationDirection)
+            {
+                rotationDirection = Random.Range(0, 2) == 0 ? 1f : -1f;
+            }
+
+            lastDirectionChangeTime = Time.time;
+        }
 
         ShowZone();
         UpdateHexagon();
@@ -918,6 +1092,45 @@ public class BlueZone : MonoBehaviour
         return mesh;
     }
 
+    // 회전 관련 공개 메서드들
+    public void SetRotationEnabled(bool enabled)
+    {
+        enableRotation = enabled;
+        Debug.Log($"헥사곤 회전: {(enabled ? "활성화" : "비활성화")}");
+    }
+
+    public void SetRotationSpeed(float baseSpeed, float maxSpeed)
+    {
+        baseRotationSpeed = baseSpeed;
+        maxRotationSpeed = maxSpeed;
+        Debug.Log($"회전 속도 설정: 기본 {baseSpeed}, 최대 {maxSpeed}");
+    }
+
+    public void SetRotationDirection(bool clockwise)
+    {
+        rotationDirection = clockwise ? 1f : -1f;
+        randomRotationDirection = false;
+        Debug.Log($"회전 방향 고정: {(clockwise ? "시계방향" : "반시계방향")}");
+    }
+
+    public void EnableRandomRotation(bool enable)
+    {
+        randomRotationDirection = enable;
+        Debug.Log($"랜덤 회전: {(enable ? "활성화" : "비활성화")}");
+    }
+
+    // 현재 회전 상태 정보 반환
+    public HexagonRotationInfo GetRotationInfo()
+    {
+        return new HexagonRotationInfo
+        {
+            currentAngle = currentRotationAngle,
+            currentSpeed = currentRotationSpeed,
+            direction = rotationDirection,
+            isRotating = enableRotation
+        };
+    }
+
     // 공개 메서드
     public bool IsInSafeZone(Vector2 position)
     {
@@ -1008,6 +1221,44 @@ public class BlueZone : MonoBehaviour
                 safeZoneRadius = currentSafeZoneRadius,
                 damagePerSecond = instantKill ? 9999f : 0
             };
+        }
+    }
+
+    // 디버그용: 현재 회전 상태 표시
+    void OnGUI()
+    {
+        if (!enableRotation || (!useHexagonMode && !useSuperHexagonMode)) return;
+
+        // 왼쪽 상단에 회전 정보 표시
+        GUI.color = Color.white;
+        GUILayout.BeginArea(new Rect(10, 100, 300, 100));
+        GUILayout.Label($"헥사곤 회전 각도: {currentRotationAngle:F1}°");
+        GUILayout.Label($"회전 속도: {currentRotationSpeed:F1}°/s");
+        GUILayout.Label($"회전 방향: {(rotationDirection > 0 ? "시계방향" : "반시계방향")}");
+        GUILayout.EndArea();
+    }
+
+    // 추가 시각적 효과: 회전 중심점 표시
+    private void OnDrawGizmos()
+    {
+        if (!Application.isPlaying || !enableRotation) return;
+
+        // 회전 중심점 표시
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(currentCenter, 1f);
+
+        // 회전 방향 화살표 표시
+        if (useHexagonMode || useSuperHexagonMode)
+        {
+            Vector3 center3D = new Vector3(currentCenter.x, currentCenter.y, 0);
+            Vector3 arrowDirection = rotationDirection > 0 ? Vector3.forward : -Vector3.forward;
+
+            Gizmos.color = rotationDirection > 0 ? Color.green : Color.red;
+            Gizmos.DrawRay(center3D, arrowDirection * 3f);
+
+            // 회전 속도에 따른 원 크기
+            float speedRatio = currentRotationSpeed / maxRotationSpeed;
+            Gizmos.DrawWireSphere(center3D, 2f + speedRatio * 3f);
         }
     }
 }
