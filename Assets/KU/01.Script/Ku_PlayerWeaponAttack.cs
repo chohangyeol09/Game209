@@ -15,6 +15,7 @@ public class Ku_PlayerWeaponAttack : MonoBehaviour
         playerAttackSound = GetComponent<AudioSource>();
     }
 
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))

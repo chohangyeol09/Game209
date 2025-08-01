@@ -25,7 +25,7 @@ public class H_Spowner : MonoBehaviour
     private int _prevStage = 1;
     private void Awake()
     {
-        SpownPosition = GetComponentsInChildren<Transform>().Where(t => t != transform).ToArray(); ;
+        SpownPosition = GetComponentsInChildren<Transform>().Where(t => t != transform).ToArray();
         
     }
 

@@ -15,9 +15,9 @@ MonoBehaviour:
   EnemyPrefab: {fileID: 4039115710039186371, guid: f2640c88f6a5aea4cae36a0a6d85ebf9, type: 3}
   Id: 3
   Name: SpeedEnemy
-  Sprite: {fileID: 3625043607559282579, guid: 045b15ec09bba42448d89db77fa6f20a, type: 3}
+  Sprite: {fileID: 7482667652216324306, guid: db750325989564987a34393247d883b4, type: 3}
   Damage: 4
-  Speed: 10
+  Speed: 100
   Exp: 7
   SpawnStartTime: 0
   color: {r: 0, g: 0, b: 0, a: 1}
