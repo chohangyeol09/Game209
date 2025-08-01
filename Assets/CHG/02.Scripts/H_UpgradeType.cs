@@ -1,15 +1,15 @@
-public enum UpgradeType
+﻿public enum UpgradeType
 {
-    FastMove,
-    StrongPower,
-    DemonPlane,
     Band,
-    DoubleSwords,
-    MaxHealth,
-    Viking,
-    Magnetic,
-    FastAttack,
     Blood,
+    DemonPlane,
+    DoubleSwords,
+    FastAttack,
+    FastMove,
+    LongSword,
+    Magnetic,
+    MaxHealth,
     PushPower,
-    LongSword
+    StrongPower,
+    Viking
 }

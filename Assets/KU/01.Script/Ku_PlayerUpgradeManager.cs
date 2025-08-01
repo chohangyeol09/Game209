@@ -82,21 +82,21 @@ public class Ku_PlayerUpgradeManager : MonoBehaviour
         {UpgradeType.PushPower,0},
         {UpgradeType.StrongPower,0},
         {UpgradeType.Viking,0}
-    };  //_upgradeType[UpgradeType.(타입)] 으로 사용
+    };  //_upgradeType[UpgradeType.(타입)] 으로 사용, 강화횟수에 따라 스크립트에서 수치 조정
     public Dictionary<UpgradeType, int> _maxupgrade = new Dictionary<UpgradeType, int>() // 자원 저장
     {
-        {UpgradeType.Band, 0},
-        {UpgradeType.Blood, 0},
-        {UpgradeType.DemonPlane, 0},
-        {UpgradeType.DoubleSwords, 0},
-        {UpgradeType.FastAttack, 0},
-        {UpgradeType.FastMove,0},
-        {UpgradeType.LongSword,1},
-        {UpgradeType.Magnetic,1},
-        {UpgradeType.MaxHealth,1},
-        {UpgradeType.PushPower,1},
-        {UpgradeType.StrongPower,1},
-        {UpgradeType.Viking,1}
+        {UpgradeType.Band, 3},
+        {UpgradeType.Blood, 3},
+        {UpgradeType.DemonPlane, 3},
+        {UpgradeType.DoubleSwords, 3},
+        {UpgradeType.FastAttack, 3},
+        {UpgradeType.FastMove,3},
+        {UpgradeType.LongSword,3},
+        {UpgradeType.Magnetic,3},
+        {UpgradeType.MaxHealth,3 },
+        {UpgradeType.PushPower,3},
+        {UpgradeType.StrongPower,3},
+        {UpgradeType.Viking,3}
     };  //업그레이드 한번만 가능한건 0으로 표시
 
     public void OnUpgradeComplete(UpgradeType type)
@@ -162,7 +162,6 @@ public class Ku_PlayerUpgradeManager : MonoBehaviour
                 _upgradeType[UpgradeType.FastAttack]++;
                 return;
             case UpgradeType.Blood://아직 수정중
-
                 _upgradeType[UpgradeType.Blood]++;
                 return;
             case UpgradeType.PushPower:

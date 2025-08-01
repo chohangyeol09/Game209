@@ -33,16 +33,7 @@ public class Ku_UpgradePanel : MonoBehaviour
             }
         }
 
-        /*for (int i = 0; i < 3; i++)
-        {
-            Vector3 position = new Vector3(400 + (-580 + 580 * (i + 1)), 500, 0);
-            GameObject clone = Instantiate(upgradeCard, position, Quaternion.identity, transform);
-
-            Ku_UpgradeCardSO randomSO = upgradeCardSOList[Random.Range(0, upgradeCardSOList.Count)];
-            clone.GetComponent<Ku_UpgradeCard>().upgradeCardSO = randomSO;
-
-            cardList.Add(clone);
-        }*/
+        
     }
 
     private void Update()

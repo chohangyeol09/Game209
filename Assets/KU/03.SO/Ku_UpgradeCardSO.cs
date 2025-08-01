@@ -6,6 +6,5 @@ public class Ku_UpgradeCardSO : ScriptableObject
     public Sprite visual;
     public string name = "name";
     public string coment = "aksdjflkjashdfkj";
-    public int cardNum = 0;
     public UpgradeType upgradeType;
 }
