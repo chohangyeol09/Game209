@@ -4,6 +4,9 @@ using UnityEngine.UI;
 
 public class Ku_PlayerUpgradeManager : MonoBehaviour
 {
+    public static Ku_PlayerUpgradeManager Instance;
+
+
     public float nowExp = 0;
     private float limitExp = 10;
     private int level = 1;
@@ -21,6 +24,17 @@ public class Ku_PlayerUpgradeManager : MonoBehaviour
 
 
     private float targetScale = 3;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+            Destroy(gameObject);
+    }
+
     private void Update()
     {
         expBar.size = nowExp/limitExp;

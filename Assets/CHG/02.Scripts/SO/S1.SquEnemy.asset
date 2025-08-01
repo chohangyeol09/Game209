@@ -17,9 +17,9 @@ MonoBehaviour:
   Name: SquEnemy
   Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
   Damage: 4
-  Speed: 8
+  Speed: 2
   Exp: 6
-  SpawnStartTime: 15
+  SpawnStartTime: 8
   color: {r: 0.08018869, g: 0.14064468, b: 1, a: 1}
-  MaxHealth: 11
+  MaxHealth: 10
   SpawnStage: 1

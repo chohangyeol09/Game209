@@ -34,8 +34,6 @@ public class Ku_PlayerWeaponAttack : MonoBehaviour
 
             _enemyScripts = collision.gameObject.GetComponent<H_Enemy>();
             _enemyScripts.Health -= damage;
-            Debug.Log("hit " + _enemyScripts.Data.Name);
-            Debug.Log(_enemyScripts.Health);
         }
     }
 }

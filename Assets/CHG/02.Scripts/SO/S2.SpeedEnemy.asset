@@ -17,9 +17,9 @@ MonoBehaviour:
   Name: SpeedEnemy
   Sprite: {fileID: 3625043607559282579, guid: 045b15ec09bba42448d89db77fa6f20a, type: 3}
   Damage: 4
-  Speed: 40
+  Speed: 10
   Exp: 7
   SpawnStartTime: 70
   color: {r: 0, g: 0, b: 0, a: 1}
-  MaxHealth: 3
+  MaxHealth: 5
   SpawnStage: 2
