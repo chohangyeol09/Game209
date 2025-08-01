@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visual: {fileID: 21300000, guid: 79d32f175afeb4c69bc6bb071702f2bd, type: 3}
   name: Band
-  coment: Get Heal for your  Max Health of 20%
+  coment: "\uCD5C\uB300 \uCCB4\uB825\uC758 20%\uB9CC\uD07C \uD68C\uBCF5\uD569\uB2C8\uB2E4!"
   cardNum: 3

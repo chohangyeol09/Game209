@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visual: {fileID: 21300000, guid: 404b6b265482049989c1b0db65779a89, type: 3}
   name: Blood
-  coment: kill enemies for heal
+  coment: "\uC801\uC744 \uCC98\uCE58\uD558\uBA74 \uC18C\uB7C9\uC758 \uCCB4\uB825\uC744
+    \uD68C\uBCF5\uD569\uB2C8\uB2E4!"
   cardNum: 9
