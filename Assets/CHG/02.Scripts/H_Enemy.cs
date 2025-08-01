@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class H_Enemy : MonoBehaviour
@@ -11,13 +12,13 @@ public class H_Enemy : MonoBehaviour
 
     private GameObject _target;
     private bool _isLive;
+    private bool _canAttack = true;
 
     [Header("stets")]
     private int _health;
     private int _maxHealth;
     private float _speed;
     private int _damage;
-
     private GameObject _boss;
     private Vector3 _bossvec;
 
@@ -66,9 +67,9 @@ public class H_Enemy : MonoBehaviour
         _spriteRen.sprite = Data.Sprite;
         _speed = Data.Speed;
         _color = _spriteRen.color;
+        _damage = Data.Damage;
         _maxHealth = Data.MaxHealth;
         _health = _maxHealth;
-        _damage = Data.Damage;
         _color = Data.color;
         _spriteRen.color = Data.color;
 
@@ -102,7 +103,7 @@ public class H_Enemy : MonoBehaviour
         H_PoolManager.Instance.EnemyPush(Data, gameObject);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionStay2D(Collision2D collision)
     {
         if (!_isLive) return;
 
@@ -113,11 +114,23 @@ public class H_Enemy : MonoBehaviour
                 //_playerScript.nowHp -= _damage;
                 Dead();
             }
+            else if(collision.gameObject.CompareTag("Boss"))
+            {
+            }
         }
         else if (collision.gameObject.CompareTag("Player"))
         {
-            _playerScript.nowHp -= (int)Time.fixedDeltaTime * _damage;
-        }
+            if (!_canAttack) return;
 
+            _playerScript.LowHealthPlayer(_damage);
+            StartCoroutine(CanAttack());
+        }
+        
+    }
+
+    private IEnumerator CanAttack()
+    {
+        yield return new WaitForSeconds(0.5f);
+        _canAttack = true;
     }
 }

@@ -3,6 +3,8 @@ using DG.Tweening; // 꼭 필요!
 
 public class Ku_PlayerWeaponAttack : MonoBehaviour
 {
+    private H_Enemy _enemyScripts;
+
     private AudioSource playerAttackSound;
     public int damage = 5;
    public float pushDistance = 1.5f;
@@ -29,6 +31,8 @@ public class Ku_PlayerWeaponAttack : MonoBehaviour
             // DOTween으로 자연스럽게 이동
             enemyTransform.DOMove(targetPosition, pushDuration)
                           .SetEase(Ease.OutQuad); // 밀리듯이 점점 멈추게
+
+            //_enemyScripts = collision.gameObject
         }
     }
 }
