@@ -4,17 +4,17 @@ using UnityEngine;
 public class Iyc_PlayerController : MonoBehaviour
 {
     [Header("Movement Settings")]
-    public float speed = 5f;
+    [SerializeField] public float speed = 5f;
     [SerializeField] private Ku_PlayerUpgradeManager upgradeManager;
 
     [Header("Combat Settings")]
     [SerializeField] private GameObject playerWeapon;
-    public float cooldown = 2f;
+    [SerializeField] public float cooldown = 2f;
     private bool isOnCooldown = false;
 
     [Header("Health Settings")]
-    public int maxHp = 100;
-    public int nowHp;
+    [SerializeField] public int maxHp = 100;
+    [SerializeField] public int nowHp;
 
     [Header("Blue Zone Effects")]
     [SerializeField] private SpriteRenderer playerSprite;

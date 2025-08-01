@@ -128,7 +128,18 @@ public class H_Enemy : MonoBehaviour
         H_PoolManager.Instance.EnemyPush(Data, gameObject);
     }
 
-    private void OnCollisionStay2D(Collision2D collision)
+    //수정
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log(collision.gameObject.name);
+
+        if (collision.gameObject.CompareTag("Wall"))
+        {
+            H_PoolManager.Instance.EnemyPush(Data, gameObject);
+        }
+    }
+    //사항
+    private void OnTriggerStay2D(Collider2D collision) //이거 트리거 수정한거
     {
         if (!_isLive) return;
 

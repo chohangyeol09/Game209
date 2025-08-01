@@ -16,8 +16,8 @@ public class H_EnemyDataSO : ScriptableObject
 
     public int SpawnStage;
 
-    private void OnValidate()
-    {
-        Name = EnemyPrefab.name;
-    }
+    //private void OnValidate()
+    //{
+    //    Name = EnemyPrefab.name;
+    //}
 }

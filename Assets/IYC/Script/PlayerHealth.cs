@@ -40,7 +40,6 @@ public class PlayerHealth : MonoBehaviour
 
         if (damageType == DamageType.BlueZone)
         {
-            // 자기장은 즉사이므로 이 메서드가 호출되면 안됨
             Debug.LogWarning("자기장은 즉사인데 TakeDamage가 호출되었습니다!");
         }
 

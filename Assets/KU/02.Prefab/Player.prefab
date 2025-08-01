@@ -48,6 +48,8 @@ MonoBehaviour:
   playerWeapon: {fileID: 313392904280755015}
   rotationDuration: 0.2
   playerTransform: {fileID: 1575388674184690770}
+  AttackAngle: 90
+  AttackStartAngle: 40
 --- !u!1 &442614629621774714
 GameObject:
   m_ObjectHideFlags: 0
@@ -162,7 +164,6 @@ MonoBehaviour:
   isUpgrade: 0
   movement: {fileID: 2210546963192681874}
   attack: {fileID: 1391366033979065906}
-  testMesh: {fileID: 0}
   upgradePanel: {fileID: 0}
   weapon: {fileID: 313392904280755015}
   expBar: {fileID: 0}
