@@ -16,7 +16,7 @@ MonoBehaviour:
   Id: 1
   Name: NomalEnemy
   Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  Damage: 5
+  Damage: 6
   Speed: 5
   Exp: 7
   SpawnStartTime: 0
