@@ -160,7 +160,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nowExp: 0
   isUpgrade: 0
-  movement: {fileID: 2210546963192681874}
+  movement: {fileID: 0}
   attack: {fileID: 1391366033979065906}
   testMesh: {fileID: 0}
   upgradePanel: {fileID: 0}
@@ -440,6 +440,7 @@ MonoBehaviour:
   nowHp: 100
   maxHp: 100
   upgradeManager: {fileID: 2129698568140527554}
+  hpText: {fileID: 0}
   speed: 5
 --- !u!82 &8153798147701358182
 AudioSource:
