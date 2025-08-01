@@ -9,6 +9,10 @@ public class BlueZoneUI : MonoBehaviour
     [SerializeField] private Text timerText;
     [SerializeField] private Text zoneStatusText;
 
+    [Header("Hexagon Mode UI")]
+    [SerializeField] private Text enemyCountText;
+    [SerializeField] private Text redSegmentText;
+
     [Header("Minimap")]
     [SerializeField] private RectTransform minimapContainer;
     [SerializeField] private Image minimapBlueZone;
@@ -49,6 +53,7 @@ public class BlueZoneUI : MonoBehaviour
 
         UpdateMinimap();
         UpdateZoneStatus();
+        UpdateHexagonModeUI();
     }
 
     void UpdatePhase(int phase)
@@ -97,6 +102,32 @@ public class BlueZoneUI : MonoBehaviour
         }
 
         playerController.SetBlueZoneStatus(!inSafeZone);
+    }
+
+    void UpdateHexagonModeUI()
+    {
+        // 적 수 표시
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        if (enemyCountText != null)
+        {
+            enemyCountText.text = $"적: {enemies.Length}명";
+            enemyCountText.color = enemies.Length > 0 ? Color.red : Color.green;
+        }
+
+        // 빨간색 통로 상태
+        if (redSegmentText != null)
+        {
+            if (enemies.Length == 0)
+            {
+                redSegmentText.text = "빨간색 통로 활성화";
+                redSegmentText.color = Color.red;
+            }
+            else
+            {
+                redSegmentText.text = "빨간색 통로 비활성화";
+                redSegmentText.color = Color.gray;
+            }
+        }
     }
 
     void UpdateMinimap()
