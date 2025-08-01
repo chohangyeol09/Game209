@@ -15,4 +15,9 @@ public class H_EnemyDataSO : ScriptableObject
     public int MaxHealth;
 
     public int SpawnStage;
+
+    private void OnValidate()
+    {
+        Name = EnemyPrefab.name;
+    }
 }
