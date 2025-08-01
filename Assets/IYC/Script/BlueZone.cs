@@ -6,7 +6,7 @@ public class BlueZone : MonoBehaviour
 {
     [Header("Zone Settings")]
     [SerializeField] private float mapSize = 100f; // 전체 맵 크기
-    [SerializeField] private int totalPhases = 8; // PUBG는 보통 8단계
+    [SerializeField] private int totalPhases = 8; // 변경 가능
     [SerializeField] private Transform targetPosition; // 수축 목표 위치
 
     [Header("Phase Timings (PUBG Style)")]
@@ -17,7 +17,7 @@ public class BlueZone : MonoBehaviour
     [SerializeField] private bool instantKill = true; // 즉사 설정
 
     [Header("Visual Settings")]
-    [SerializeField] private int circleSegments = 1;
+    [SerializeField] private int circleSegments = 360;
     [SerializeField] private Color blueZoneColor = new Color(0f, 0.5f, 1f, 0.8f);
     [SerializeField] private Color safeZoneColor = new Color(1f, 1f, 1f, 0.5f);
     [SerializeField] private float blueZoneThickness = 3f;
