@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 771180861751348518}
   - component: {fileID: 6203162985946179271}
   - component: {fileID: 2399305906042820848}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cannon
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -103,6 +103,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Data: {fileID: 0}
+  Health: 0
 --- !u!50 &6203162985946179271
 Rigidbody2D:
   serializedVersion: 5

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5406223759893091504}
   - component: {fileID: 4098163859527134423}
   - component: {fileID: 5444950835373245945}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: DownBullet
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -166,3 +166,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Data: {fileID: 0}
+  Health: 0

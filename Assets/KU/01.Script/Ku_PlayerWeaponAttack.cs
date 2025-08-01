@@ -1,5 +1,5 @@
-using UnityEngine;
 using DG.Tweening; // 꼭 필요!
+using UnityEngine;
 
 public class Ku_PlayerWeaponAttack : MonoBehaviour
 {
@@ -7,7 +7,7 @@ public class Ku_PlayerWeaponAttack : MonoBehaviour
 
     private AudioSource playerAttackSound;
     public int damage = 5;
-   public float pushDistance = 1.5f;
+    public float pushDistance = 1.5f;
     [SerializeField] private float pushDuration = 0.2f; // 밀리는 시간
 
     private void Awake()
@@ -32,7 +32,10 @@ public class Ku_PlayerWeaponAttack : MonoBehaviour
             enemyTransform.DOMove(targetPosition, pushDuration)
                           .SetEase(Ease.OutQuad); // 밀리듯이 점점 멈추게
 
-            //_enemyScripts = collision.gameObject
+            _enemyScripts = collision.gameObject.GetComponent<H_Enemy>();
+            _enemyScripts.Health -= damage;
+            Debug.Log("hit " + _enemyScripts.Data.Name);
+            Debug.Log(_enemyScripts.Health);
         }
     }
 }

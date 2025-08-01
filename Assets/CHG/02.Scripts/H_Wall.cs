@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class C_Wall : MonoBehaviour
+public class H_Wall : MonoBehaviour
 {
     private H_Enemy _enemyScript;
     private H_EnemyDataSO _data;

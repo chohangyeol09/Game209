@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4397948410995301698}
   - component: {fileID: 2650758575209533734}
   - component: {fileID: 4965771553320372088}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SpeedEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -130,6 +130,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Data: {fileID: 0}
+  Health: 0
 --- !u!60 &4965771553320372088
 PolygonCollider2D:
   m_ObjectHideFlags: 0

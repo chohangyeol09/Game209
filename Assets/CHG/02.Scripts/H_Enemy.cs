@@ -15,8 +15,7 @@ public class H_Enemy : MonoBehaviour
     private bool _canAttack = true;
 
     [Header("stets")]
-    private int _health;
-    private int _maxHealth;
+    public int Health;
     private float _speed;
     private int _damage;
     private GameObject _boss;
@@ -30,9 +29,12 @@ public class H_Enemy : MonoBehaviour
         _spriteRen = GetComponent<SpriteRenderer>();
         _target = GameObject.FindWithTag("Player");
         _playerScript = _target.GetComponent<Ku_PlayerMovement>();
-        
-        
-        
+    }
+
+    private void Update()
+    {
+        if (Health <= 0)
+            Dead();
     }
 
     private void FixedUpdate()
@@ -53,8 +55,6 @@ public class H_Enemy : MonoBehaviour
             case 6:
                 _rb2.linearVelocity = _bossvec * _speed * Time.deltaTime;
                 break;
-
-
         }
     }
 
@@ -68,15 +68,14 @@ public class H_Enemy : MonoBehaviour
         _speed = Data.Speed;
         _color = _spriteRen.color;
         _damage = Data.Damage;
-        _maxHealth = Data.MaxHealth;
-        _health = _maxHealth;
+        Health = Data.MaxHealth;
         _color = Data.color;
         _spriteRen.color = Data.color;
 
         if (Data.Id == 3 || Data.Id == 4 || Data.Id == 5)
             _oneDir = _target.transform.position - transform.position;
 
-        if(Data.Id == 6)
+        if (Data.Id == 6)
         {
             _boss = GameObject.FindWithTag("Boss");
             _bossvec = _boss.transform.up;
@@ -94,7 +93,7 @@ public class H_Enemy : MonoBehaviour
             Debug.Log(Data.Id);
             GameObject expbead = H_PoolManager.Instance.ExpPop();
             expbead.transform.position = transform.position;
-            expbead.GetComponent<H_Expbead>().Exp = Data.Exp;
+            expbead.GetComponent<Ku_ExpTest>().Exp = Data.Exp;
         }
 
         _isLive = false;
@@ -107,25 +106,21 @@ public class H_Enemy : MonoBehaviour
     {
         if (!_isLive) return;
 
-        if (Data.Id == 4 || Data.Id == 5 || Data.Id == 6)
+
+        if (collision.gameObject.CompareTag("Player"))
         {
-            if (collision.gameObject.CompareTag("Player"))
+            if (Data.Id == 4 || Data.Id == 5 || Data.Id == 6)
             {
-                //_playerScript.nowHp -= _damage;
                 Dead();
             }
-            else if(collision.gameObject.CompareTag("Boss"))
-            {
-            }
-        }
-        else if (collision.gameObject.CompareTag("Player"))
-        {
+
             if (!_canAttack) return;
 
-            _playerScript.LowHealthPlayer(_damage);
+            _playerScript.AttackPlayer(_damage);
+            _canAttack = false;
             StartCoroutine(CanAttack());
+
         }
-        
     }
 
     private IEnumerator CanAttack()
