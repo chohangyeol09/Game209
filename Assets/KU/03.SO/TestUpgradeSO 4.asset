@@ -15,5 +15,4 @@ MonoBehaviour:
   visual: {fileID: 21300000, guid: 61aafad307a01474688d1699977a17b8, type: 3}
   name: Double Swords
   coment: "\uB9CE\uC740 \uACF5\uACA9\uB825\uC744 \uC5BB\uC73C\uC138\uC694!"
-  cardNum: 4
-  upgradeType: 4
+  upgradeType: 3
