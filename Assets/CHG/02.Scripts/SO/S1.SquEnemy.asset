@@ -19,7 +19,7 @@ MonoBehaviour:
   Damage: 4
   Speed: 8
   Exp: 6
-  SpawnStartTime: 6
+  SpawnStartTime: 15
   color: {r: 0.08018869, g: 0.14064468, b: 1, a: 1}
   MaxHealth: 11
   SpawnStage: 1

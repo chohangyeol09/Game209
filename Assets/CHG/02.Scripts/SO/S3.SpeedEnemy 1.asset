@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8aa620462d3f69a4686c259b4345a8b1, type: 3}
-  m_Name: S2.SquEnemy
+  m_Name: S3.SpeedEnemy 1
   m_EditorClassIdentifier: 
-  EnemyPrefab: {fileID: 8542369977999990975, guid: 33c177d17a651c54093438f35ba9bbb7, type: 3}
-  Id: 2
-  Name: SquEnemy
-  Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
-  Damage: 8
-  Speed: 13
-  Exp: 12
-  SpawnStartTime: 29
-  color: {r: 0, g: 0.033400282, b: 0.49056602, a: 1}
-  MaxHealth: 30
+  EnemyPrefab: {fileID: 4039115710039186371, guid: f2640c88f6a5aea4cae36a0a6d85ebf9, type: 3}
+  Id: 3
+  Name: SpeedEnemy
+  Sprite: {fileID: 3625043607559282579, guid: 045b15ec09bba42448d89db77fa6f20a, type: 3}
+  Damage: 4
+  Speed: 40
+  Exp: 7
+  SpawnStartTime: 115
+  color: {r: 0.49056602, g: 0.488252, b: 0.488252, a: 1}
+  MaxHealth: 13
   SpawnStage: 2

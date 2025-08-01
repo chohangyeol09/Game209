@@ -8,7 +8,7 @@ public class H_Spowner : MonoBehaviour
 
     [SerializeField] private Transform[] SpownPosition;
     [SerializeField] private H_EnemyDataSO[] AllEnemyData;
-
+    [SerializeField] private Transform Target; 
     [SerializeField] float _stage1 = 30;
     [SerializeField] float _stage2 = 60;
     [SerializeField] float _stage3 = 90;
@@ -51,11 +51,11 @@ public class H_Spowner : MonoBehaviour
             {
                 float angle = i * Mathf.PI * 2 / SpawnCount;
                 float x = Mathf.Cos(angle) * Range;
-                float z = Mathf.Sin(angle) * Range;
+                float y = Mathf.Sin(angle) * Range;
 
                 float angleDegrees = -angle * Mathf.Rad2Deg;
-                //GameObject enemy = H_PoolManager.Instance.PoolPop("Enemy"); //소환 수정
-                //enemy.transform.position = new Vector3(x, z, 0);
+                GameObject enemy = Instantiate(AllEnemyData[0].EnemyPrefab); //소환 수정
+                enemy.transform.position = new Vector3(x + Target.transform.position.x, y + Target.transform.position.y, 0);
             }
         }
     }
