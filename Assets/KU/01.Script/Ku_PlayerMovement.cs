@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Ku_PlayerMovement : MonoBehaviour
 {
     [SerializeField] private GameObject playerWeapon;
-
+    [SerializeField] private GameObject replay;
     private SpriteRenderer spriteRenderer;
     public float cooldown = 2f;
 
@@ -24,6 +24,7 @@ public class Ku_PlayerMovement : MonoBehaviour
     Image heart;
     private void Awake()
     {
+        Time.timeScale = 1;
         spriteRenderer = GetComponent<SpriteRenderer>();
         playerDieAudio = GetComponent<AudioSource>();
         heart = GameObject.Find("Heart").GetComponent<Image>();
@@ -41,7 +42,8 @@ public class Ku_PlayerMovement : MonoBehaviour
         }
         if (nowHp <= 0)
         {
-            Debug.Log("Game Over");
+            replay.gameObject.SetActive(true);
+            Time.timeScale = 0;
             playerDieAudio.Play();
         }
         if (!upgradeManager.isUpgrade)
