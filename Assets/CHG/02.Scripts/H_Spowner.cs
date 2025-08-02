@@ -5,7 +5,9 @@ using Random = UnityEngine.Random;
 
 public class H_Spowner : MonoBehaviour
 {
-
+    [SerializeField] private GameObject Cleaner;
+    [SerializeField] private GameObject BlueZone;
+    [SerializeField] private GameObject Boss;
     [SerializeField] private Transform[] SpownPosition;
     [SerializeField] private H_EnemyDataSO[] AllEnemyData;
     [SerializeField] private H_EnemyDataSO CircleData;
@@ -14,6 +16,7 @@ public class H_Spowner : MonoBehaviour
     [SerializeField] float _stage1 = 30;
     [SerializeField] float _stage2 = 60;
     [SerializeField] float _stage3 = 90;
+    [SerializeField] float _bossStage = 120;
 
     private float _spownTime = 1f;
     private int lastTriggered = -1;
@@ -50,13 +53,28 @@ public class H_Spowner : MonoBehaviour
         {
             _curStage = 3;
         }
+        else if (_gameTime < _bossStage)
+        {
+            _curStage = 4;
+        }
 
         // 스테이지가 바뀌었을 때 한 번만 실행
         if (_curStage != _prevStage)
         {
+
+            if (_prevStage <3)
             CreateCircleEnemy();
+            else if (_prevStage ==3)
+            {
+                Boss.SetActive(true);
+                Cleaner.SetActive(true);
+                Destroy(BlueZone);
+                Debug.Log(gameObject.activeSelf);
+            }
             _prevStage = _curStage;
-            Debug.Log(_curStage);
+
+            Debug.Log("Stage " +_prevStage);
+
         }
 
         if (_timer > _spownTime)
