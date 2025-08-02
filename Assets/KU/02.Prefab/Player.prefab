@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3452510639270957634}
   - component: {fileID: 1315038793869367203}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: PlayerWeapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -63,7 +63,7 @@ GameObject:
   - component: {fileID: 6794958740742612450}
   - component: {fileID: 2129698568140527554}
   - component: {fileID: 6673520194176105705}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: expManager
   m_TagString: Exp
   m_Icon: {fileID: 0}
@@ -193,7 +193,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8924068243189073238}
   - component: {fileID: 2203914693863083097}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PlayerNose
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -284,7 +284,8 @@ GameObject:
   - component: {fileID: 8487042150594520217}
   - component: {fileID: 2210546963192681874}
   - component: {fileID: 8153798147701358182}
-  m_Layer: 0
+  - component: {fileID: 5720641397972777471}
+  m_Layer: 3
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -557,6 +558,22 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &5720641397972777471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1577976579493758754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a65c426765cb214d8ec4d2bcab4a388, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  currentHealth: 0
+  playerSprite: {fileID: 0}
+  blueZoneDamageEffect: {fileID: 0}
 --- !u!1 &3438637506637298592
 GameObject:
   m_ObjectHideFlags: 0
@@ -570,7 +587,7 @@ GameObject:
   - component: {fileID: 8865486049891201672}
   - component: {fileID: 1391366033979065906}
   - component: {fileID: 49184929800890753}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -815,7 +832,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4183325186177673747}
   - component: {fileID: 772940314142184134}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Circle
   m_TagString: Untagged
   m_Icon: {fileID: 0}

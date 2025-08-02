@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 37788263}
   - component: {fileID: 37788262}
   - component: {fileID: 37788261}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: expManager
   m_TagString: Exp
   m_Icon: {fileID: 0}
@@ -555,7 +555,8 @@ GameObject:
   m_Component:
   - component: {fileID: 535347658}
   - component: {fileID: 535347657}
-  m_Layer: 0
+  - component: {fileID: 535347659}
+  m_Layer: 3
   m_Name: Triangle
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -632,6 +633,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &535347659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 535347656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a65c426765cb214d8ec4d2bcab4a388, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  currentHealth: 0
+  playerSprite: {fileID: 0}
+  blueZoneDamageEffect: {fileID: 0}
 --- !u!1 &572076131
 GameObject:
   m_ObjectHideFlags: 0
@@ -645,7 +662,7 @@ GameObject:
   - component: {fileID: 572076135}
   - component: {fileID: 572076134}
   - component: {fileID: 572076133}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -890,7 +907,7 @@ GameObject:
   m_Component:
   - component: {fileID: 792500895}
   - component: {fileID: 792500896}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Circle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
