@@ -155,6 +155,7 @@ public class H_Enemy : MonoBehaviour
 
         if (collision.gameObject.name == "Visual" && IfBullet())
         {
+            Debug.Log("CollisionVirsual");
             _canMove = true;  // 이동은 계속되도록 유지
 
             // 반사 방향 계산
