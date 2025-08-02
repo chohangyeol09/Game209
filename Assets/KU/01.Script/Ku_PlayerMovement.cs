@@ -1,10 +1,13 @@
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Ku_PlayerMovement : MonoBehaviour
 {
     [SerializeField] private GameObject playerWeapon;
+
+    private SpriteRenderer spriteRenderer;
     public float cooldown = 2f;
 
     public int nowHp;
@@ -18,14 +21,25 @@ public class Ku_PlayerMovement : MonoBehaviour
     public float speed = 5f;
 
     private AudioSource playerDieAudio;
+    Image heart;
     private void Awake()
     {
+        spriteRenderer = GetComponent<SpriteRenderer>();
         playerDieAudio = GetComponent<AudioSource>();
+        heart = GameObject.Find("Heart").GetComponent<Image>();
     }
     private void Update()
     {
         hpText.text = $"{nowHp}\n{maxHp}";
-        if(nowHp <= 0)
+        if(nowHp <= maxHp / 2)
+        {
+            heart.color = Color.red;
+        }
+        else
+        {
+            heart.color = Color.white;
+        }
+        if (nowHp <= 0)
         {
             Debug.Log("Game Over");
             playerDieAudio.Play();
@@ -68,6 +82,8 @@ public class Ku_PlayerMovement : MonoBehaviour
     public void AttackPlayer(int damage)
     {
         nowHp -= damage;
+        spriteRenderer.color = Color.red;
+        spriteRenderer.DOColor(Color.white, 1f);
     }
     public void LowHealthPlayer(int health)
     {
