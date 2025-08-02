@@ -15,6 +15,12 @@ public class H_Boss : MonoBehaviour
     private H_Enemy _enemyScript;
     private Ku_PlayerWeaponAttack _attakScript;
 
+    [SerializeField] private AudioSource AwakeSource;
+    [SerializeField] private AudioSource ShootSource;
+    [SerializeField] private AudioSource HitSource;
+    [SerializeField] private AudioSource DeadSource;
+
+    [SerializeField] private GameObject End;
     [SerializeField] private GameObject BulletPrefab;
     [SerializeField] private GameObject FireCanon;
     [SerializeField] private GameObject FirePos;
@@ -48,6 +54,10 @@ public class H_Boss : MonoBehaviour
             Cannon,
             Spin
         };
+    }
+    private void OnEnable()
+    {
+        AwakeSource.Play();
     }
 
     private void Update()
@@ -99,7 +109,7 @@ public class H_Boss : MonoBehaviour
             {
                 Spown(StraightBull);
             }
-
+            ShootSource.Play();
 
 
             yield return new WaitForSeconds(wait);
@@ -137,6 +147,7 @@ public class H_Boss : MonoBehaviour
         _spriteRen.DOColor(Color.red, 2.5f).OnComplete(() =>
         {
             Spown(CannonBall);
+            ShootSource.Play();
             _spriteRen.DOColor(Color.white, 0.5f);
         });
     }
@@ -185,7 +196,9 @@ public class H_Boss : MonoBehaviour
 
         if(Health <= 0)
         {
-            //»ç¸Á
+            DeadSource.Play();
+            End.SetActive(true);
+            gameObject.SetActive(false);
         }
     }
 
