@@ -4738,10 +4738,11 @@ MonoBehaviour:
   CircleData: {fileID: 11400000, guid: 03ee98934c3ed0c45b7ce1a1ccbc7eea, type: 2}
   Target: {fileID: 1845910106}
   Chast: {fileID: 438632007471916732, guid: 68a1ef51da583414aae528ab22f262be, type: 3}
-  _stage1: 5
-  _stage2: 10
-  _stage3: 15
-  _bossStage: 20
+  _stage1: 45
+  _stage2: 90
+  _stage3: 135
+  _bossStage: 180
+  _spownTime: 2
 --- !u!1 &1181656660
 GameObject:
   m_ObjectHideFlags: 0
@@ -5861,9 +5862,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 313392904280755015, guid: f2cd466a4338e6e4cb9dd37052ce6e4b, type: 3}
+      propertyPath: m_TagString
+      value: Weapon
+      objectReference: {fileID: 0}
     - target: {fileID: 1315038793869367203, guid: f2cd466a4338e6e4cb9dd37052ce6e4b, type: 3}
       propertyPath: AttackAngle
-      value: 90
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 1315038793869367203, guid: f2cd466a4338e6e4cb9dd37052ce6e4b, type: 3}
       propertyPath: AttackStartAngle
@@ -5871,7 +5876,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1315038793869367203, guid: f2cd466a4338e6e4cb9dd37052ce6e4b, type: 3}
       propertyPath: rotationDuration
-      value: 0.1
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 1391366033979065906, guid: f2cd466a4338e6e4cb9dd37052ce6e4b, type: 3}
       propertyPath: pushDistance
@@ -5971,7 +5976,15 @@ PrefabInstance:
       objectReference: {fileID: 948699355}
     - target: {fileID: 2210546963192681874, guid: f2cd466a4338e6e4cb9dd37052ce6e4b, type: 3}
       propertyPath: cooldown
-      value: 0.5
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3438637506637298592, guid: f2cd466a4338e6e4cb9dd37052ce6e4b, type: 3}
+      propertyPath: m_TagString
+      value: Weapon
+      objectReference: {fileID: 0}
+    - target: {fileID: 8487042150594520217, guid: f2cd466a4338e6e4cb9dd37052ce6e4b, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8865486049891201672, guid: f2cd466a4338e6e4cb9dd37052ce6e4b, type: 3}
       propertyPath: m_IsTrigger
@@ -6080,7 +6093,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef2b3e94f32b9ba4fbf0e2beeae773b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _pause: {fileID: 0}
+  _pause: {fileID: 452836454}
 --- !u!1 &1491001232
 GameObject:
   m_ObjectHideFlags: 0
@@ -6834,7 +6847,7 @@ MonoBehaviour:
   destroyParticles: {fileID: 0}
   destroySound: {fileID: 0}
   redSegmentSound: {fileID: 0}
-  enableRotation: 1
+  enableRotation: 0
   baseRotationSpeed: 30
   maxRotationSpeed: 180
   rotationAcceleration: 10

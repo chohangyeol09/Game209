@@ -257,7 +257,10 @@ public class H_Enemy : MonoBehaviour
     public void SetData()
     {
         _target = GameObject.FindWithTag("Player");
-        _playerScript = _target.GetComponent<Ku_PlayerMovement>();
+        if(_playerScript != null)
+        {
+            _playerScript = _target.GetComponent<Ku_PlayerMovement>();
+        }
 
         gameObject.name = Data.Name;
         _spriteRen.sprite = Data.Sprite;
@@ -303,7 +306,10 @@ public class H_Enemy : MonoBehaviour
         }
 
         int heal = Ku_PlayerUpgradeManager.Instance._upgradeType[UpgradeType.Blood] * 2;
-        _playerScript.HealPlayer(heal);
+        if(_playerScript != null)
+        {
+            _playerScript.HealPlayer(heal);
+        }
 
         _isLive = false;
         _isExploding = false;
@@ -358,6 +364,9 @@ public class H_Enemy : MonoBehaviour
     private void OnCollisionStay2D(Collision2D collision)
     {
         if (!_isLive) return;
+
+        // 무기와 충돌 시 아무것도 하지 않음
+        if (collision.gameObject.CompareTag("Weapon")) return;
 
         if (collision.gameObject.CompareTag("Player"))
         {

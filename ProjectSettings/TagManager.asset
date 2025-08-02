@@ -8,6 +8,7 @@ TagManager:
   - Exp
   - Boss
   - Wall
+  - Weapon
   layers:
   - Default
   - TransparentFX
