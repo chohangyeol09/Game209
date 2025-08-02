@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class H_Boss : MonoBehaviour
@@ -18,8 +19,10 @@ public class H_Boss : MonoBehaviour
     [SerializeField] private GameObject FireCanon;
     [SerializeField] private GameObject FirePos;
     [SerializeField] private GameObject DangerZonePrefab;
+    [SerializeField] private Image HpUI;
 
-    public int Health = 200;
+    public int MaxHp = 200;
+    public int Health;
     private float _coolTime = 5;
     private float _curTime = 0;
     private SpriteRenderer _spriteRen;
@@ -33,6 +36,7 @@ public class H_Boss : MonoBehaviour
         _playerScript = _target.GetComponent<Ku_PlayerMovement>();
         _dangerZone = DangerZonePrefab.GetComponent<H_DangerZone>();
         _spriteRen = GetComponent<SpriteRenderer>();
+        Health = MaxHp;
     }
 
     private void Start()
@@ -56,6 +60,7 @@ public class H_Boss : MonoBehaviour
             AttackPetton[r]();
             _curTime = 0;
         }
+
 
     }
     private void FixedUpdate()
@@ -172,10 +177,9 @@ public class H_Boss : MonoBehaviour
             int damage = _attakScript.damage;
             Health -= damage;
         }
-    }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
+        HpUI.fillAmount = Health % MaxHp;
+        Debug.Log(Health % MaxHp);
     }
 
 
