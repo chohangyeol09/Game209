@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class H_Boss : MonoBehaviour
@@ -18,8 +19,10 @@ public class H_Boss : MonoBehaviour
     [SerializeField] private GameObject FireCanon;
     [SerializeField] private GameObject FirePos;
     [SerializeField] private GameObject DangerZonePrefab;
+    [SerializeField] private Image HpUI;
 
-    public int Health = 200;
+    public int MaxHp = 200;
+    public int Health;
     private float _coolTime = 5;
     private float _curTime = 0;
     private SpriteRenderer _spriteRen;
@@ -33,6 +36,7 @@ public class H_Boss : MonoBehaviour
         _playerScript = _target.GetComponent<Ku_PlayerMovement>();
         _dangerZone = DangerZonePrefab.GetComponent<H_DangerZone>();
         _spriteRen = GetComponent<SpriteRenderer>();
+        Health = MaxHp;
     }
 
     private void Start()
@@ -48,6 +52,7 @@ public class H_Boss : MonoBehaviour
 
     private void Update()
     {
+        if (!gameObject.activeSelf) return;
         _curTime += Time.deltaTime;
 
         if (_coolTime < _curTime)
@@ -57,10 +62,13 @@ public class H_Boss : MonoBehaviour
             _curTime = 0;
         }
 
+
     }
     private void FixedUpdate()
     {
+        if (!gameObject.activeSelf) return;
         if (_isSpin) return;
+
         Vector3 dir = _target.transform.position - transform.position;
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.AngleAxis(angle - 90, Vector3.forward);
@@ -172,10 +180,13 @@ public class H_Boss : MonoBehaviour
             int damage = _attakScript.damage;
             Health -= damage;
         }
-    }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
+        HpUI.fillAmount = (float)Health / (float)MaxHp;
+
+        if(Health <= 0)
+        {
+            //»ç¸Á
+        }
     }
 
 

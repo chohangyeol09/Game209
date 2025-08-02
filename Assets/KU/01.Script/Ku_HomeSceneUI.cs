@@ -23,9 +23,12 @@ public class Ku_HomeSceneUI : MonoBehaviour
 
     IEnumerator itsNotTitle()
     {
-        uiImage.DOFade(0f, 1f);
-        yield return new WaitForSeconds(1f);
-        gameObject.SetActive(false);
+        if(uiImage != null) 
+        {
+            uiImage.DOFade(0f, 1f);
+            yield return new WaitForSeconds(1f);
+            gameObject.SetActive(false);
+        }
     }
     public void OnPlayGame()
     {
@@ -52,14 +55,17 @@ public class Ku_HomeSceneUI : MonoBehaviour
 
     IEnumerator GameStart()
     {
-        uiImage.gameObject.SetActive(true);
-        Color color = uiImage.color;
-        color.a = 0f;
-        uiImage.color = color;
+        if (isTitle)
+        {
+            uiImage.gameObject.SetActive(true);
+            Color color = uiImage.color;
+            color.a = 0f;
+            uiImage.color = color;
 
-        uiImage.DOFade(1f, 1f);
+            uiImage.DOFade(1f, 1f);
+            yield return new WaitForSeconds(1.5f);
+        }
 
-        yield return new WaitForSeconds(1.5f);
         SceneManager.LoadScene(1);
     }
 }

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6085653028450051025}
   - component: {fileID: 1583601186081994839}
   - component: {fileID: 171355435989985386}
+  - component: {fileID: 4223197143923111351}
   m_Layer: 7
   m_Name: CircleEnemy
   m_TagString: Enemy
@@ -181,3 +182,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Data: {fileID: 0}
   Health: 0
+--- !u!114 &4223197143923111351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3835469454259560647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a65c426765cb214d8ec4d2bcab4a388, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  currentHealth: 0
+  playerSprite: {fileID: 0}
+  blueZoneDamageEffect: {fileID: 0}
