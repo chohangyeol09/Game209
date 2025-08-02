@@ -36,7 +36,6 @@ public class H_DangerZone : MonoBehaviour
         if (IsCollision)
         {
             _playerScript.AttackPlayer(15);
-            Debug.Log("Attack");
         }
     }
 }

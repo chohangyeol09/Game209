@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4397948410995301698}
   - component: {fileID: 2650758575209533734}
   - component: {fileID: 4965771553320372088}
+  - component: {fileID: -8957792996098487281}
   m_Layer: 7
   m_Name: SpeedEnemy
   m_TagString: Enemy
@@ -182,3 +183,19 @@ PolygonCollider2D:
       - {x: 1.28, y: -1.28}
       - {x: 1.28, y: 1.28}
   m_UseDelaunayMesh: 0
+--- !u!114 &-8957792996098487281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4039115710039186371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a65c426765cb214d8ec4d2bcab4a388, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  currentHealth: 0
+  playerSprite: {fileID: 0}
+  blueZoneDamageEffect: {fileID: 0}

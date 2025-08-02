@@ -21,5 +21,5 @@ MonoBehaviour:
   Exp: 0
   SpawnStartTime: 0
   color: {r: 1, g: 0, b: 0, a: 1}
-  MaxHealth: 24
+  MaxHealth: 100
   SpawnStage: 0

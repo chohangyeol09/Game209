@@ -156,21 +156,29 @@ public class H_Boss : MonoBehaviour
 
     #endregion
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.transform.CompareTag("Enemy"))
         {
             _enemyScript = collision.gameObject.GetComponent<H_Enemy>();
-            Health -= _enemyScript.Data.Damage; 
-        }
-        else if (collision.gameObject.layer == 8)
-        {
-            
+            Health -= _enemyScript.Data.Damage;
+            Debug.Log(collision.gameObject.GetComponent<H_Enemy>().Data.Name);
+            H_PoolManager.Instance.EnemyPush(collision.gameObject.GetComponent<H_Enemy>().Data, collision.gameObject);
         }
 
-        if (Health < 0)
+        if (collision.gameObject.name == "Visual")
         {
-            //¾Øµù
+            Debug.Log(2);
+            Health -= collision.gameObject.GetComponent<Ku_PlayerWeaponAttack>().damage;
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.name == "Visual")
+        {
+            Debug.Log(2);
+            Health -= collision.gameObject.GetComponent<Ku_PlayerWeaponAttack>().damage;
         }
     }
 
