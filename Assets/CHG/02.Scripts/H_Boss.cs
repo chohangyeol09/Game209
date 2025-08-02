@@ -52,6 +52,7 @@ public class H_Boss : MonoBehaviour
 
     private void Update()
     {
+        if (!gameObject.activeSelf) return;
         _curTime += Time.deltaTime;
 
         if (_coolTime < _curTime)
@@ -65,7 +66,9 @@ public class H_Boss : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        if (!gameObject.activeSelf) return;
         if (_isSpin) return;
+
         Vector3 dir = _target.transform.position - transform.position;
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.AngleAxis(angle - 90, Vector3.forward);
@@ -178,8 +181,12 @@ public class H_Boss : MonoBehaviour
             Health -= damage;
         }
 
-        HpUI.fillAmount = Health % MaxHp;
-        Debug.Log(Health % MaxHp);
+        HpUI.fillAmount = (float)Health / (float)MaxHp;
+
+        if(Health <= 0)
+        {
+            //»ç¸Á
+        }
     }
 
 
