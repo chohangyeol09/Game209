@@ -11,6 +11,22 @@ public class Ku_HomeSceneUI : MonoBehaviour
     public GameObject _pauseObj;
     public  Image _volumeSetting;
 
+    [SerializeField] private bool isTitle = true;
+
+    private void Start()
+    {
+        if (!isTitle)
+        {
+            StartCoroutine(itsNotTitle());
+        }
+    }
+
+    IEnumerator itsNotTitle()
+    {
+        uiImage.DOFade(0f, 1f);
+        yield return new WaitForSeconds(1f);
+        gameObject.SetActive(false);
+    }
     public void OnPlayGame()
     {
         StartCoroutine(GameStart());
