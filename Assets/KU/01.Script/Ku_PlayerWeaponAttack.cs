@@ -18,6 +18,7 @@ public class Ku_PlayerWeaponAttack : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+            Debug.Log(3);
         if (collision.gameObject.CompareTag("Enemy"))
         {
             playerAttackSound.Play();
@@ -33,9 +34,16 @@ public class Ku_PlayerWeaponAttack : MonoBehaviour
             _enemyScripts = collision.gameObject.GetComponent<H_Enemy>();
             _enemyScripts.Health -= damage;
         }
+
+            Debug.Log(1);
+        if(collision.gameObject.TryGetComponent<H_Boss>(out H_Boss _boss))
+        {
+            Debug.Log(2);
+            _boss.Health -= damage;
+        }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    /*private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
@@ -52,5 +60,5 @@ public class Ku_PlayerWeaponAttack : MonoBehaviour
             _enemyScripts = collision.gameObject.GetComponent<H_Enemy>();
             _enemyScripts.Health -= damage;
         }
-    }
+    }*/
 }

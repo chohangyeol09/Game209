@@ -12,13 +12,14 @@ public class H_Boss : MonoBehaviour
     private H_DangerZone _dangerZone;
     private Ku_PlayerMovement _playerScript;
     private H_Enemy _enemyScript;
+    private Ku_PlayerWeaponAttack _attakScript;
 
     [SerializeField] private GameObject BulletPrefab;
     [SerializeField] private GameObject FireCanon;
     [SerializeField] private GameObject FirePos;
     [SerializeField] private GameObject DangerZonePrefab;
 
-    private int Health = 200;
+    public int Health = 200;
     private float _coolTime = 5;
     private float _curTime = 0;
     private SpriteRenderer _spriteRen;
@@ -162,25 +163,21 @@ public class H_Boss : MonoBehaviour
         {
             _enemyScript = collision.gameObject.GetComponent<H_Enemy>();
             Health -= _enemyScript.Data.Damage;
-            Debug.Log(collision.gameObject.GetComponent<H_Enemy>().Data.Name);
             H_PoolManager.Instance.EnemyPush(collision.gameObject.GetComponent<H_Enemy>().Data, collision.gameObject);
         }
-
+        Debug.Log("collision");
         if (collision.gameObject.name == "Visual")
         {
-            Debug.Log(2);
-            Health -= collision.gameObject.GetComponent<Ku_PlayerWeaponAttack>().damage;
+            _attakScript = collision.gameObject.GetComponent<Ku_PlayerWeaponAttack>();
+            int damage = _attakScript.damage;
+            Health -= damage;
         }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.name == "Visual")
-        {
-            Debug.Log(2);
-            Health -= collision.gameObject.GetComponent<Ku_PlayerWeaponAttack>().damage;
-        }
     }
+
 
     private void Spown(H_EnemyDataSO data)
     {
