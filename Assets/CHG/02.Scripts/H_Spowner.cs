@@ -18,7 +18,7 @@ public class H_Spowner : MonoBehaviour
     [SerializeField] float _stage3 = 90;
     [SerializeField] float _bossStage = 120;
 
-    private float _spownTime = 1f;
+    public float _spownTime = 1f;
     private int lastTriggered = -1;
     private float _timer = 0;
     private float _gameTime;
@@ -89,6 +89,9 @@ public class H_Spowner : MonoBehaviour
             lastTriggered = current;
             CreateChast();
         }
+
+
+
     }
 
     private void CreateChast()

@@ -175,6 +175,9 @@ public class H_Enemy : MonoBehaviour
     {
         if (!_isLive) return;
 
+        // 무기와 충돌 시 아무것도 하지 않음
+        if (collision.gameObject.CompareTag("Weapon")) return;
+
         if (collision.gameObject.CompareTag("Player"))
         {
             if (IfBullet())
@@ -187,8 +190,6 @@ public class H_Enemy : MonoBehaviour
                 StartCoroutine(CanAttack());
             }
         }
-
-
     }
 
     private void OnCollisionExit2D(Collision2D collision)

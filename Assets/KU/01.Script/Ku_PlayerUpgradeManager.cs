@@ -85,18 +85,18 @@ public class Ku_PlayerUpgradeManager : MonoBehaviour
     };  //_upgradeType[UpgradeType.(타입)] 으로 사용, 강화횟수에 따라 스크립트에서 수치 조정
     public Dictionary<UpgradeType, int> _maxupgrade = new Dictionary<UpgradeType, int>() // 자원 저장
     {
-        {UpgradeType.Band, 3},
-        {UpgradeType.Blood, 3},
-        {UpgradeType.DemonPlane, 3},
-        {UpgradeType.DoubleSwords, 3},
-        {UpgradeType.FastAttack, 3},
-        {UpgradeType.FastMove,3},
-        {UpgradeType.LongSword,3},
-        {UpgradeType.Magnetic,3},
-        {UpgradeType.MaxHealth,3 },
-        {UpgradeType.PushPower,3},
-        {UpgradeType.StrongPower,3},
-        {UpgradeType.Viking,3}
+        {UpgradeType.Band, 0},
+        {UpgradeType.Blood, 1},
+        {UpgradeType.DemonPlane, 0},
+        {UpgradeType.DoubleSwords, 1},
+        {UpgradeType.FastAttack, 2},
+        {UpgradeType.FastMove,2},
+        {UpgradeType.LongSword,2},
+        {UpgradeType.Magnetic,1},
+        {UpgradeType.MaxHealth,2},
+        {UpgradeType.PushPower,1},
+        {UpgradeType.StrongPower,2},
+        {UpgradeType.Viking,2}
     };  //업그레이드 한번만 가능한건 0으로 표시
 
     public void OnUpgradeComplete(UpgradeType type)
@@ -125,11 +125,11 @@ public class Ku_PlayerUpgradeManager : MonoBehaviour
         switch (type)
         {
             case UpgradeType.FastMove:
-                movement.speed += 0.5f;
+                movement.speed += 0.7f;
                 _upgradeType[UpgradeType.FastMove]++;
                 return;
             case UpgradeType.StrongPower:
-                attack.damage += 4;
+                attack.damage += 3;
                 _upgradeType[UpgradeType.StrongPower]++;
                 return;
             case UpgradeType.DemonPlane:
@@ -142,7 +142,7 @@ public class Ku_PlayerUpgradeManager : MonoBehaviour
                 _upgradeType[UpgradeType.Band]++;
                 return;
             case UpgradeType.DoubleSwords:
-                attack.damage += 6;
+                attack.damage += 4;
                 _upgradeType[UpgradeType.DoubleSwords]++;
                 return;
             case UpgradeType.MaxHealth:
@@ -165,11 +165,11 @@ public class Ku_PlayerUpgradeManager : MonoBehaviour
                 _upgradeType[UpgradeType.Blood]++;
                 return;
             case UpgradeType.PushPower:
-                attack.pushDistance += 0.25f;
+                attack.pushDistance += 0.5f;
                 _upgradeType[UpgradeType.PushPower]++;
                 return;
             case UpgradeType.LongSword:
-                weapon.transform.localScale = new Vector3(1, weapon.transform.localScale.y + 0.25f, 1);
+                weapon.transform.localScale = new Vector3(1, weapon.transform.localScale.y + 0.5f, 1);
                 _upgradeType[UpgradeType.LongSword]++;
                 return;
             default: return;
