@@ -804,11 +804,10 @@ public class BlueZone : MonoBehaviour
                     return;
                 }
 
-                PlayerHealth playerController = player.GetComponent<PlayerHealth>();
+                Ku_PlayerMovement playerController = player.GetComponent<Ku_PlayerMovement>();
                 if (playerController != null && instantKill)
                 {
-                    playerController.InstantKill();
-                    killedPlayers.Add(player.gameObject);
+                    playerController.nowHp -= playerController.nowHp;
                     Debug.Log($"{player.name}이(가) 자기장에 닿아 즉사했습니다!");
                 }
             }

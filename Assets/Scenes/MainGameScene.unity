@@ -7061,7 +7061,7 @@ MonoBehaviour:
   destroyParticles: {fileID: 0}
   destroySound: {fileID: 0}
   redSegmentSound: {fileID: 0}
-  enableRotation: 1
+  enableRotation: 0
   baseRotationSpeed: 30
   maxRotationSpeed: 180
   rotationAcceleration: 10

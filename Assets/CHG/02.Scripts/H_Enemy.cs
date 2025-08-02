@@ -257,7 +257,10 @@ public class H_Enemy : MonoBehaviour
     public void SetData()
     {
         _target = GameObject.FindWithTag("Player");
-        _playerScript = _target.GetComponent<Ku_PlayerMovement>();
+        if(_playerScript != null)
+        {
+            _playerScript = _target.GetComponent<Ku_PlayerMovement>();
+        }
 
         gameObject.name = Data.Name;
         _spriteRen.sprite = Data.Sprite;
@@ -303,7 +306,10 @@ public class H_Enemy : MonoBehaviour
         }
 
         int heal = Ku_PlayerUpgradeManager.Instance._upgradeType[UpgradeType.Blood] * 2;
-        _playerScript.HealPlayer(heal);
+        if(_playerScript != null)
+        {
+            _playerScript.HealPlayer(heal);
+        }
 
         _isLive = false;
         _isExploding = false;
