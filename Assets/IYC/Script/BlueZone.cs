@@ -30,7 +30,7 @@ public class BlueZone : MonoBehaviour
 
     [Header("Hexagon Rotation Settings")]
     [SerializeField] private bool enableRotation = true;
-    [SerializeField] private float baseRotationSpeed = 30f; // 기본 회전 속도 (도/초)
+    [SerializeField] private float baseRotationSpeed = 30f; // 기본 회전 속도 (도/초)d
     [SerializeField] private float maxRotationSpeed = 180f; // 최대 회전 속도
     [SerializeField] private float rotationAcceleration = 10f; // 회전 가속도
     [SerializeField] private float directionChangeInterval = 3f; // 회전 방향 변경 간격
@@ -523,9 +523,9 @@ public class BlueZone : MonoBehaviour
 
     void CheckForEnemies()
     {
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-        hasEnemies = enemies.Length > 0;
-        Debug.Log($"적 발견: {enemies.Length}명");
+        //GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        //hasEnemies = enemies.Length > 0;
+        //Debug.Log($"적 발견: {enemies.Length}명");
     }
 
     void SelectRedSegment()
