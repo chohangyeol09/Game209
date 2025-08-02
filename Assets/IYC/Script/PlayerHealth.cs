@@ -1,7 +1,10 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerHealth : MonoBehaviour
 {
+    [SerializeField] private GameObject replay;
+
     [Header("Health Settings")]
     [SerializeField] private float maxHealth = 100f;
     [SerializeField] private float currentHealth;
@@ -11,6 +14,7 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private GameObject blueZoneDamageEffect;
 
     private bool isInBlueZone = false;
+
 
     public System.Action<float, float> OnHealthChanged;
     public System.Action<DamageType> OnDeath;
@@ -45,7 +49,8 @@ public class PlayerHealth : MonoBehaviour
 
         if (currentHealth <= 0)
         {
-            Debug.Log("»ç¸Á");
+            replay.gameObject.SetActive(true);
+            Time.timeScale = 0;
             Die(damageType);
         }
     }
