@@ -178,6 +178,7 @@ public class Ku_PlayerUpgradeManager : MonoBehaviour
 
     private void LevelUp()
     {
+        Time.timeScale = 0;
         level++;
         nowExp -= limitExp;
         limitExp = level * 10;
